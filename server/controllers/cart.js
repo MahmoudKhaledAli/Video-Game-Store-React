@@ -1,6 +1,6 @@
 const pool = require('../sqlConnector.js');
 
-const addToCart = async (req, res) => {
+exports.addToCart = async (req, res) => {
   let connection;
 
   try {
@@ -25,12 +25,12 @@ const addToCart = async (req, res) => {
       [req.body.quantity, req.body.id]
     );
 
-    res.send(JSON.stringify({
+    res.json({
       idproduct: req.body.id,
       quantity: req.body.quantity,
       final_price: (100 - product.sale) * product.price * req.body.quantity / 100,
       product: product
-    }));
+    });
   } catch (err) {
     console.log(err);
   } finally {
@@ -39,7 +39,7 @@ const addToCart = async (req, res) => {
   }
 };
 
-const fetchCart = async (req, res) => {
+exports.fetchCart = async (req, res) => {
   let connection;
 
   try {
@@ -58,7 +58,7 @@ const fetchCart = async (req, res) => {
       };
     });
 
-    res.send(JSON.stringify(cartItems));
+    res.json(cartItems);
   } catch (err) {
     console.log(err);
   } finally {
@@ -66,8 +66,3 @@ const fetchCart = async (req, res) => {
     res.end()
   }
 }
-
-module.exports = {
-  addToCart: addToCart,
-  fetchCart: fetchCart
-};

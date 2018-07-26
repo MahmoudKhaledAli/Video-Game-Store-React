@@ -1,6 +1,8 @@
-const handlers = require('./request_handlers');
+const Cart = require('./controllers/cart');
+const Product = require('./controllers/product');
 
-module.exports.route = app => {
-    app.post('/addtocart', handlers.addToCart);
-    app.post('/fetchcart', handlers.fetchCart);
+module.exports = app => {
+    app.post('/addtocart', Cart.addToCart);
+    app.post('/fetchcart', Cart.fetchCart);
+    app.post('/search', Product.productSearch);
 }

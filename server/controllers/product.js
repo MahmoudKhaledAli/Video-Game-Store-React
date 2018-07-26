@@ -1,6 +1,6 @@
 const pool = require('../sqlConnector.js');
 
-const productSearch = async (req, res) => {
+exports.productSearch = async (req, res) => {
   let connection;
 
   const platformQuery = `SELECT product.*, AVG(reviews.score) AS avg_score
@@ -15,7 +15,7 @@ const productSearch = async (req, res) => {
   WHERE name LIKE ? GROUP BY product.idproduct ORDER BY
   ${req.body.field} ${req.body.order}`;
 
-  const queryParameters = ['%' + req.query.name + '%'];
+  const queryParameters = ['%' + req.body.name + '%'];
 
   try {
     connection = await pool.getConnection();
@@ -27,7 +27,7 @@ const productSearch = async (req, res) => {
       searchResults = connection.query(platformQuery, platformQueryParameters);
     }
 
-    res.send(JSON.stringify(searchResults));
+    res.json(searchResults);
 
   } catch (err) {
     console.log(err);
@@ -36,7 +36,3 @@ const productSearch = async (req, res) => {
     res.end();
   }
 }
-
-module.exports = {
-  productSearch: productSearch
-};

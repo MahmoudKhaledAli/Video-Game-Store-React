@@ -14,8 +14,4 @@ var LocaldbConfig = {
     dateStrings: "date"
 };
 
-//module.exports = mysql.createPool(OnlinedbConfig);
-
 module.exports = mysql.createPool(LocaldbConfig);
-
-//module.exports = mysql.createPool(LocaldbConfig);
