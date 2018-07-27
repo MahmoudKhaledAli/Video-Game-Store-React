@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 
 import { requireAuth } from 'components';
 
-export default requireAuth(false, class extends Component {
+export default requireAuth(false)(class extends Component {
   renderForm(props) {
     return (
       <form onSubmit={props.handleSubmit}>

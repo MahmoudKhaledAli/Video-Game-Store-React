@@ -6,3 +6,4 @@ export { default as ProductShow } from './ProductShow';
 export { default as ProductsList } from './ProductsList';
 export { default as ScrollToTop } from './ScrollToTop';
 export { default as requireAuth } from './requireAuth';
+export { default as alert } from './alert';

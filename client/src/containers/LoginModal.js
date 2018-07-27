@@ -1,47 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { Modal, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
-import SweetAlert from 'react-bootstrap-sweetalert';
 
 import { signin } from 'actions';
+import { alert } from 'components';
 
 import 'styles/login.css';
 
 class LoginModal extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { alert: null };
-  }
-
-  alert(alertMsg) {
-    const getAlert = alertMsg => (
-      <SweetAlert
-        danger={alertMsg}
-        success={!alertMsg}
-        title={alertMsg ? "Sign in failed!" : "Sign in"}
-        onConfirm={() => {
-          this.hideAlert();
-          this.props.onHide();
-        }}
-      >
-        {alertMsg ? alertMsg : 'Logged in successfully'}
-      </SweetAlert>
-    );
-
-    this.setState({ alert: getAlert(alertMsg) });
-  }
-
-  hideAlert() {
-    this.setState({ alert: null });
-  }
-
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
     this.props.signin(values, () => {
-      this.alert(this.props.errorMessage);
+      this.props.alert(this.props.errorMessage, () => {
+        this.props.onHide();
+      });
     });
   }
 
@@ -88,8 +63,6 @@ class LoginModal extends Component {
   }
 
   render() {
-    console.log(this.props);
-
     return (
       <div className="static-modal">
         <Modal show={this.props.show} onHide={this.props.onHide} dialogClassName="moderate-modal">
@@ -111,7 +84,6 @@ class LoginModal extends Component {
             </div>
           </Modal.Body>
         </Modal>
-        {this.state.alert}
       </div >
     );
   }
@@ -121,4 +93,9 @@ function mapStateToProps(state) {
   return { errorMessage: state.auth.errorMessage };
 }
 
-export default connect(mapStateToProps, { signin })(LoginModal);
+const enhance = compose(
+  alert({ title: 'Sign in', successMsg: 'Logged in successfully' }),
+  connect(mapStateToProps, { signin })
+)
+
+export default enhance(LoginModal);

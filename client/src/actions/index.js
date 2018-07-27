@@ -22,7 +22,7 @@ export const signup = (userInfo, callback) => async dispatch => {
 
 export const signout = (callback) => dispatch => {
   localStorage.removeItem('token');
-  
+
   dispatch({
     type: ActionTypes.AUTH_USER,
     payload: ''
@@ -31,15 +31,17 @@ export const signout = (callback) => dispatch => {
   callback();
 }
 
-export const signin = (userInfo, callback) => async dispatch => {
+export const signin = (loginInfo, callback) => async dispatch => {
   try {
-    const response = await axios.post('http://localhost:8080/signin', userInfo);
+    const response = await axios.post('http://localhost:8080/signin', loginInfo);
 
     dispatch({
       type: ActionTypes.AUTH_USER,
       payload: response.data.token
     });
-    localStorage.setItem('token', response.data.token);
+    if (loginInfo.remember) {
+      localStorage.setItem('token', response.data.token);
+    }
   } catch (err) {
     dispatch({
       type: ActionTypes.AUTH_ERROR,

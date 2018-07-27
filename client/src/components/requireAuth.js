@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-export default (redirect = true, WrappedComponent) => {
+export default (redirect = true) => WrappedComponent => {
   class ComposedComponent extends Component {
     // Our component just got rendered
     componentDidMount() {

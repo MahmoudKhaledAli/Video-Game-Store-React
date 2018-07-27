@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { CartTable } from 'containers'
 import { requireAuth } from 'components';
 
-export default requireAuth(() => {
+export default requireAuth()(() => {
   return (
     <div>
       <Helmet>
