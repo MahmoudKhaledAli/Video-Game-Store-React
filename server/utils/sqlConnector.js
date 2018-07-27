@@ -1,8 +1,3 @@
-/**
- * Created by Ahmkel on 12/5/2015.
- */
-
-//Create the connection
 var mysql = require('promise-mysql');
 
 var LocaldbConfig = {

@@ -1,4 +1,4 @@
-const pool = require('../sqlConnector.js');
+const pool = require('../utils/sqlConnector.js');
 
 exports.productSearch = async (req, res) => {
   let connection;
@@ -28,9 +28,8 @@ exports.productSearch = async (req, res) => {
     }
 
     res.json(searchResults);
-
   } catch (err) {
-    console.log(err);
+    next(err);
   } finally {
     connection.release();
     res.end();

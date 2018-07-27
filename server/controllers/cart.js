@@ -1,6 +1,6 @@
-const pool = require('../sqlConnector.js');
+const pool = require('../utils/sqlConnector');
 
-exports.addToCart = async (req, res) => {
+exports.addToCart = async (req, res, next) => {
   let connection;
 
   try {
@@ -32,14 +32,14 @@ exports.addToCart = async (req, res) => {
       product: product
     });
   } catch (err) {
-    console.log(err);
+    next(err);
   } finally {
     connection.release();
     res.end()
   }
 };
 
-exports.fetchCart = async (req, res) => {
+exports.fetchCart = async (req, res, next) => {
   let connection;
 
   try {
@@ -60,7 +60,7 @@ exports.fetchCart = async (req, res) => {
 
     res.json(cartItems);
   } catch (err) {
-    console.log(err);
+    next(err);
   } finally {
     connection.release()
     res.end()
