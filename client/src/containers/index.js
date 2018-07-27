@@ -7,3 +7,4 @@ export { default as CartItem } from './CartItem';
 export { default as LoginModal } from './LoginModal';
 export { default as RegistrationModal } from './RegistrationModal';
 export { default as ReviewForm } from './ReviewForm';
+export { default as NavBar } from './NavBar';

@@ -1,11 +1,50 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { Modal, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
+import SweetAlert from 'react-bootstrap-sweetalert';
+
+import { signin } from 'actions';
 
 import 'styles/login.css';
 
-export default class extends Component {
+class LoginModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { alert: null };
+  }
+
+  alert(alertMsg) {
+    const getAlert = alertMsg => (
+      <SweetAlert
+        danger={alertMsg}
+        success={!alertMsg}
+        title={alertMsg ? "Sign in failed!" : "Sign in"}
+        onConfirm={() => {
+          this.hideAlert();
+          this.props.onHide();
+        }}
+      >
+        {alertMsg ? alertMsg : 'Logged in successfully'}
+      </SweetAlert>
+    );
+
+    this.setState({ alert: getAlert(alertMsg) });
+  }
+
+  hideAlert() {
+    this.setState({ alert: null });
+  }
+
+  handleFormSubmit(values, actions) {
+    actions.setSubmitting(false);
+    this.props.signin(values, () => {
+      this.alert(this.props.errorMessage);
+    });
+  }
+
   renderForm(props) {
     return (
       <form className="form-signin" onSubmit={props.handleSubmit}>
@@ -48,13 +87,9 @@ export default class extends Component {
     );
   }
 
-  handleFormSubmit(values, actions) {
-    console.log(values);
-    
-    actions.setSubmitting(false);
-  }
-
   render() {
+    console.log(this.props);
+
     return (
       <div className="static-modal">
         <Modal show={this.props.show} onHide={this.props.onHide} dialogClassName="moderate-modal">
@@ -67,7 +102,7 @@ export default class extends Component {
               <p id="profile-name" className="profile-name-card"></p>
               <Formik
                 initialValues={{ username: '', password: '', remember: false }}
-                onSubmit={this.handleFormSubmit}
+                onSubmit={this.handleFormSubmit.bind(this)}
                 render={this.renderForm}
               />
               <a href="" className="forgot-password">
@@ -76,7 +111,14 @@ export default class extends Component {
             </div>
           </Modal.Body>
         </Modal>
+        {this.state.alert}
       </div >
     );
   }
 }
+
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.errorMessage };
+}
+
+export default connect(mapStateToProps, { signin })(LoginModal);

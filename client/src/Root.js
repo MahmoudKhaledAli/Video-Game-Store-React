@@ -2,14 +2,16 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import promiseMiddleware from "redux-promise";
+import reduxThunk from "redux-thunk";
 
 import reducers from 'reducers';
 
 
-export const store = createStore(reducers, composeWithDevTools(
-  applyMiddleware(promiseMiddleware)
-));
+export const store = createStore(reducers,
+  { auth: { authenticated: localStorage.getItem('token') } },
+  composeWithDevTools(
+    applyMiddleware(reduxThunk)
+  ));
 
 
 export default props => {

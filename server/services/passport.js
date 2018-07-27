@@ -16,15 +16,23 @@ const localLogin = new LocalStrategy({}, (username, password, done) => {
     );
   }).then(rows => {
     const user = rows[0];
-    return bcrypt.compare(password, user.password.toString());
+    if (user) {
+      return bcrypt.compare(password, user.password.toString());
+    } else {
+      return Promise.reject('no_user');
+    }
   }).then(isMatch => {
     if (isMatch) {
       done(null, username);
     } else {
-      done(null, false);
+      done(null, false, { message: 'Wrong password.' });
     }
   }).catch(err => {
-    done(err, false);
+    if (err == 'no_user') {
+      done(null, false, { message: 'Username does not exist.' });
+    } else {
+      done(err, false);
+    }
   }).finally(() => {
     connection.release();
   });

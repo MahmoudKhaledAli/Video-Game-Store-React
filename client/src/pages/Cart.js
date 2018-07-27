@@ -3,8 +3,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { CartTable } from 'containers'
+import { requireAuth } from 'components';
 
-export default () => {
+export default requireAuth(() => {
   return (
     <div>
       <Helmet>
@@ -13,4 +14,4 @@ export default () => {
       <CartTable />
     </div>
   );
-}
+});

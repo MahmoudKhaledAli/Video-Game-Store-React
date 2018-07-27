@@ -26,7 +26,8 @@ exports.signup = async (req, res, next) => {
     );
 
     if (existingUsers.length) {
-      return res.status(422).send({ error: 'Email or username already registered' });
+      res.status(422);
+      return next(new Error('Email or username already registered'));
     }
 
     await connection.query(

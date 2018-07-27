@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 
-export default class extends Component {
+import { requireAuth } from 'components';
+
+export default requireAuth(false, class extends Component {
   renderForm(props) {
     return (
       <form onSubmit={props.handleSubmit}>
@@ -57,4 +59,4 @@ export default class extends Component {
       </div>
     );
   }
-}
+});

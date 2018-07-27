@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { NavBar, Footer, ScrollToTop } from 'components';
-import { LoginModal, RegistrationModal } from 'containers';
+import { Footer, ScrollToTop } from 'components';
+import { NavBar, LoginModal, RegistrationModal } from 'containers';
 
 export default class extends Component {
   constructor(props) {

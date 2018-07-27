@@ -1,6 +1,6 @@
-var mysql = require('promise-mysql');
+const mysql = require('promise-mysql');
 
-var LocaldbConfig = {
+const LocaldbConfig = {
     host: "localhost",
     user: "root",
     password: "root",

@@ -1,11 +1,52 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { Modal, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
+import SweetAlert from 'react-bootstrap-sweetalert';
+
+import { signup } from 'actions';
 
 import 'styles/login.css';
 
-export default class extends Component {
+class RegistrationModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { alert: null };
+  }
+
+  alert(alertMsg) {
+    const getAlert = alertMsg => (
+      <SweetAlert
+        danger={alertMsg}
+        success={!alertMsg}
+        title={alertMsg ? "Sign up failed!" : "Sign up"}
+        onConfirm={() => {
+          this.hideAlert();
+          this.props.onHide();
+          this.props.history.push('/');
+        }}
+      >
+        {alertMsg || "Sign up successfull"}
+      </SweetAlert>
+    );
+
+    this.setState({ alert: getAlert(alertMsg) });
+  }
+
+  hideAlert() {
+    this.setState({ alert: null });
+  }
+
+  handleFormSubmit(values, actions) {
+    actions.setSubmitting(false);
+    this.props.signup(values, () => {
+      this.alert(this.props.errorMessage);
+    });
+  }
+
   renderForm(props) {
     return (
       <form onSubmit={props.handleSubmit}>
@@ -66,12 +107,6 @@ export default class extends Component {
     );
   }
 
-  handleFormSubmit(values, actions) {
-    console.log(values);
-    
-    actions.setSubmitting(false);
-  }
-
   render() {
     return (
       <div className="static-modal">
@@ -82,12 +117,19 @@ export default class extends Component {
           <Modal.Body>
             <Formik
               initialValues={{ username: '', email: '', password: '', address: '' }}
-              onSubmit={this.handleFormSubmit}
+              onSubmit={this.handleFormSubmit.bind(this)}
               render={this.renderForm}
             />
           </Modal.Body>
         </Modal>
+        {this.state.alert}
       </div >
     );
   }
 }
+
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.errorMessage };
+}
+
+export default withRouter(connect(mapStateToProps, { signup })(RegistrationModal));
