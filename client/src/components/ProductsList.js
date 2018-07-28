@@ -5,7 +5,7 @@ import { ProductShow } from 'components';
 
 import 'styles/style.css'
 
-class ProductsList extends Component {
+export default class extends Component {
   renderProduct(product) {
     return <ProductShow key={product.idproduct} product={product} gridSize={this.props.gridSize} />;
   }
@@ -18,5 +18,3 @@ class ProductsList extends Component {
     );
   }
 }
-
-export default ProductsList;

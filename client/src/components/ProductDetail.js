@@ -46,7 +46,6 @@ export default ({ product, platforms }) => {
             </button>
         </form>
       </div>
-
     </div >
   );
 }

@@ -7,7 +7,7 @@ export const signup = (userInfo, callback) => async dispatch => {
 
     dispatch({
       type: ActionTypes.AUTH_USER,
-      payload: response.data.token
+      payload: response.data
     });
     localStorage.setItem('token', response.data.token);
   } catch (err) {
@@ -25,7 +25,11 @@ export const signout = (callback) => dispatch => {
 
   dispatch({
     type: ActionTypes.AUTH_USER,
-    payload: ''
+    payload: {
+      authenticated: '',
+      username: '',
+      address: ''
+    }
   });
 
   callback();
@@ -37,7 +41,7 @@ export const signin = (loginInfo, callback) => async dispatch => {
 
     dispatch({
       type: ActionTypes.AUTH_USER,
-      payload: response.data.token
+      payload: response.data
     });
     if (loginInfo.remember) {
       localStorage.setItem('token', response.data.token);

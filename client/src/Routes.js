@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Home, Browse, Product, Cart } from 'pages';
+import { Home, Browse, Product, Cart, Account } from 'pages';
 
 export default () => {
   return (
@@ -10,6 +10,7 @@ export default () => {
       <Route exact path="/browse" component={Browse} />
       <Route exact path="/product/:id" component={Product} />
       <Route exact path="/cart" component={Cart} />
+      <Route exact path="/account" component={Account} />
     </Switch>
   );
 };

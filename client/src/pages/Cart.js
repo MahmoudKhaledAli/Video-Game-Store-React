@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet';
 
-import { CartTable } from 'containers'
+import { CartTable, Checkout } from 'containers'
 import { requireAuth } from 'components';
+import { platforms } from 'utilities';
 
 export default requireAuth()(() => {
   return (
@@ -11,7 +12,10 @@ export default requireAuth()(() => {
       <Helmet>
         <title>Video Game Store - Cart</title>
       </Helmet>
-      <CartTable />
+      <div className="row">
+        <CartTable platforms={platforms} />
+        <Checkout />
+      </div>
     </div>
   );
 });

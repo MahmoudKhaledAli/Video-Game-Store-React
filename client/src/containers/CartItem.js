@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import 'styles/style.css';
 
-import { platforms } from 'utilities';
-
 class CartItem extends Component {
   render() {
     const { product: { name, platform, price, sale, idproduct }, quantity, final_price } = this.props.cartItem;
@@ -11,7 +9,7 @@ class CartItem extends Component {
     return (
       <tr key={idproduct}>
         <td>{name}</td>
-        <td>{platforms[platform]}</td>
+        <td>{this.props.platforms[platform]}</td>
         <td>
           <div className="col-xs-4">
             <input className="form-control" type="number" name="quantity" value={quantity} />

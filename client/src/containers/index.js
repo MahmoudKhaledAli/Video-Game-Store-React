@@ -8,3 +8,7 @@ export { default as LoginModal } from './LoginModal';
 export { default as RegistrationModal } from './RegistrationModal';
 export { default as ReviewForm } from './ReviewForm';
 export { default as NavBar } from './NavBar';
+export { default as UpdateAddress } from './UpdateAddress';
+export { default as Checkout } from './Checkout';
+export { default as UserOrder } from './UserOrder';
+export { default as UserOrderList } from './UserOrderList';

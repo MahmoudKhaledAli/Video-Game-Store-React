@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 
 import { Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 
 import { requireAuth } from 'components';
 
-export default requireAuth(false)(class extends Component {
+class ReviewFrom extends Component {
   renderForm(props) {
     return (
       <form onSubmit={props.handleSubmit}>
@@ -59,4 +60,10 @@ export default requireAuth(false)(class extends Component {
       </div>
     );
   }
-});
+}
+
+const enhance = compose(
+  requireAuth(false)
+);
+
+export default enhance(ReviewFrom);

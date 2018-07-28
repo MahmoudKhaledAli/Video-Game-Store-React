@@ -67,7 +67,7 @@ class RegistrationModal extends Component {
         <div className="form-group">
           <label>Address:</label>
           <textarea
-            type="password"
+            type="text"
             className="form-control"
             placeholder="Enter your address"
             name="address"

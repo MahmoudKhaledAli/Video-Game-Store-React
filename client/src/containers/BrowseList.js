@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { ProductsList } from 'components';
 
@@ -9,4 +10,8 @@ function mapStateToProps({ products }) {
   };
 }
 
-export default connect(mapStateToProps)(ProductsList);
+const enhance = compose(
+  connect(mapStateToProps)
+);
+
+export default enhance(ProductsList);

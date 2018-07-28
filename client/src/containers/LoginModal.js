@@ -71,16 +71,18 @@ class LoginModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="card card-container" style={{ padding: '10px 10px' }}>
-              <img alt="" id="profile-img" className="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+              <img
+                alt=""
+                id="profile-img"
+                className="profile-img-card"
+                src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+              />
               <p id="profile-name" className="profile-name-card"></p>
               <Formik
                 initialValues={{ username: '', password: '', remember: false }}
                 onSubmit={this.handleFormSubmit.bind(this)}
                 render={this.renderForm}
               />
-              <a href="" className="forgot-password">
-                Forgot the password?
-              </a>
             </div>
           </Modal.Body>
         </Modal>
