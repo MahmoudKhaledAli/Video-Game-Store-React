@@ -4,15 +4,15 @@ import 'styles/style.css';
 
 class CartItem extends Component {
   render() {
-    const { product: { name, platform, price, sale, idproduct }, quantity, final_price } = this.props.cartItem;
+    const { product: { name, platform, price, sale }, final_price } = this.props.cartItem;
 
     return (
-      <tr key={idproduct}>
+      <tr>
         <td>{name}</td>
         <td>{this.props.platforms[platform]}</td>
         <td>
           <div className="col-xs-4">
-            <input className="form-control" type="number" name="quantity" value={quantity} />
+            <input className="form-control" type="number" name="quantity" value={this.props.quantity} />
           </div>
         </td>
         <td>{price}</td>

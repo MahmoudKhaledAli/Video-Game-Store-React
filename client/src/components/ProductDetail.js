@@ -14,7 +14,7 @@ function renderPrice(product) {
   }
 }
 
-export default ({ product, platforms }) => {
+export default ({ product, platforms, children }) => {
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -37,14 +37,7 @@ export default ({ product, platforms }) => {
         <h4>Platform: {platforms[product.platform]}</h4>
         <h4>Average Rating: {product.avg_score}
         </h4>
-        <form>
-          <div className="form-group">
-            <input type="number" className="form-control" style={{ width: '100px' }} />
-          </div>
-          <button type="submit" className="btn btn-success btn-md">
-            <span className="glyphicon glyphicon-shopping-cart" /> Add To Cart
-            </button>
-        </form>
+        {children}
       </div>
     </div >
   );

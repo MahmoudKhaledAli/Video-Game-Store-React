@@ -1,22 +1,24 @@
+import { ADD_TO_CART } from 'actions/types';
+import _ from 'lodash';
+
 const defaultState = {
-  cart: [],
+  cartItems: [{
+    idproduct: 1,
+    quantity: 5,
+    final_price: 500,
+  }],
   total: 0
 }
 
 export function cartReducer(state = defaultState, action) {
-  return {
-    cartItems: [
-      {
-        idproduct: 1,
-        quantity: 2,
-        final_price: 200
-      },
-      {
-        idproduct: 2,
-        quantity: 3,
-        final_price: 300
+  switch (action.type) {
+    case ADD_TO_CART:
+      return {
+        cartItems: [...state.cart, _.omit(action.payload, 'product')],
+        total: state.total + action.payload.final_price
       }
-    ],
-    total: 500
+
+    default:
+      return state;
   }
 }

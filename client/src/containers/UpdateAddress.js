@@ -5,24 +5,29 @@ import { compose } from 'redux';
 import { Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 
+import { alert } from 'components'
+import { updateAddress } from 'actions';
+
 class UpdateAddress extends Component {
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
-    console.log(values);
-    
+    this.props.updateAddress(values.address, () => {
+      this.props.alert('');
+    });
   }
 
-  renderForm(props) {
+  RenderForm(props) {
     return (
       <form onSubmit={props.handleSubmit}>
         <div className="form-group">
           <textarea
             name="address"
             className="form-control"
-            rows="5"
+            rows="3"
+            style={{ fontSize: '20px' }}
             onChange={props.handleChange}
             onBlur={props.handleBlur}
-            value={props.values.address}
+            value={props.address}
             required
           />
         </div>
@@ -35,9 +40,8 @@ class UpdateAddress extends Component {
       <div>
         <h2>Update Address</h2>
         <Formik
-          initialValues={{ address: this.props.address }}
           onSubmit={this.handleFormSubmit.bind(this)}
-          render={this.renderForm}
+          render={props => <this.RenderForm {...props} address={this.props.address} />}
         />
       </div>
     );
@@ -45,13 +49,16 @@ class UpdateAddress extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state);
+  
   return {
-    address: state.auth.address
+    address: state.auth.address,
   };
 }
 
 const enhance = compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps, { updateAddress }),
+  alert({ title: 'Update address', successMsg: 'Address updated successfully!' })
 );
 
 export default enhance(UpdateAddress);

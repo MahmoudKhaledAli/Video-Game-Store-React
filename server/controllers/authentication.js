@@ -20,6 +20,8 @@ exports.signup = async (req, res, next) => {
   try {
     [hash, connection] = await Promise.all([await bcrypt.hash(password, 10), await pool.getConnection()]);
 
+    await connection.query('START TRANSACTION');
+
     const existingUsers = await connection.query(
       "SELECT * FROM user WHERE email = ? OR username = ?",
       [email, username]
@@ -31,12 +33,15 @@ exports.signup = async (req, res, next) => {
     }
 
     await connection.query(
-      "Insert into user values (?, ?, ?, ?, ?, ?)",
+      "INSERT into user values (?, ?, ?, ?, ?, ?)",
       [username, hash, email, address, banned, dateAdded]
     );
 
-    res.json({ token: tokenForUser(username) });
+    await connection.query('COMMIT');
+
+    res.json({ token: tokenForUser(username), username: username, address: address });
   } catch (err) {
+    await connection.query('ROLLBACK');
     next(err);
   } finally {
     connection.release();
@@ -44,6 +49,7 @@ exports.signup = async (req, res, next) => {
   }
 }
 
-exports.signin = async (req, res, next) => {
-  res.send({ token: tokenForUser(req.username) });
+exports.fetchUserInfo = async (req, res) => {
+  res.json({ token: tokenForUser(req.user.username), username: req.user.username, address: req.user.address });
+  res.end();
 }

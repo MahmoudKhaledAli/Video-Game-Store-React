@@ -45,7 +45,7 @@ class CartTable extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {_.map(cartItems, cartItem => <CartItem cartItem={cartItem} platforms={this.props.platforms} />)}
+                  {_.map(cartItems, cartItem => <CartItem key={cartItem.idproduct} cartItem={cartItem} platforms={this.props.platforms} />)}
                 </tbody>
               </table>
             </div>

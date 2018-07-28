@@ -8,6 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const localLogin = new LocalStrategy({}, (username, password, done) => {
   let connection;
+  let user;
   pool.getConnection().then(conn => {
     connection = conn;
     return connection.query(
@@ -15,7 +16,7 @@ const localLogin = new LocalStrategy({}, (username, password, done) => {
       [username]
     );
   }).then(rows => {
-    const user = rows[0];
+    user = rows[0];
     if (user) {
       return bcrypt.compare(password, user.password.toString());
     } else {
@@ -23,7 +24,7 @@ const localLogin = new LocalStrategy({}, (username, password, done) => {
     }
   }).then(isMatch => {
     if (isMatch) {
-      done(null, username);
+      done(null, user);
     } else {
       done(null, false, { message: 'Wrong password.' });
     }
@@ -47,6 +48,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   let connection;
   pool.getConnection().then(conn => {
     connection = conn;
+    
     return connection.query(
       "SELECT * FROM user WHERE username = ?",
       payload.sub

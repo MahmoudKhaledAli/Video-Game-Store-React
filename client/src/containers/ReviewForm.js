@@ -43,8 +43,6 @@ class ReviewFrom extends Component {
   }
 
   handleFormSubmit(values, actions) {
-    console.log(values);
-
     actions.setSubmitting(false);
   }
 

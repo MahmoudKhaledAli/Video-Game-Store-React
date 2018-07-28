@@ -51,10 +51,11 @@ CREATE TABLE IF NOT EXISTS `games`.`user` (
   `address` VARCHAR(100) NOT NULL,
   `banned` INT(11) NOT NULL DEFAULT '0',
   `datecreated` DATE NOT NULL,
-  PRIMARY KEY (`username`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+  PRIMARY KEY (`username`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+CREATE UNIQUE INDEX `email_UNIQUE` ON `games`.`user` (`email` ASC);
 
 
 -- -----------------------------------------------------
@@ -67,7 +68,6 @@ CREATE TABLE IF NOT EXISTS `games`.`cart` (
   `idproduct` INT(11) NOT NULL,
   `quantity` INT(11) NOT NULL,
   PRIMARY KEY (`username`, `idproduct`),
-  INDEX `product_idx` (`idproduct` ASC),
   CONSTRAINT `product`
     FOREIGN KEY (`idproduct`)
     REFERENCES `games`.`product` (`idproduct`)
@@ -80,6 +80,8 @@ CREATE TABLE IF NOT EXISTS `games`.`cart` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+CREATE INDEX `product_idx` ON `games`.`cart` (`idproduct` ASC);
 
 
 -- -----------------------------------------------------
@@ -102,7 +104,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `games`.`order` ;
 
 CREATE TABLE IF NOT EXISTS `games`.`order` (
-  `idorder` INT(11) NOT NULL,
+  `idorder` INT(11) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
   `idproduct` INT(11) NOT NULL,
   `quantity` INT(11) NOT NULL,
@@ -110,8 +112,6 @@ CREATE TABLE IF NOT EXISTS `games`.`order` (
   `datecreated` DATE NOT NULL,
   `total` FLOAT NULL DEFAULT NULL,
   PRIMARY KEY (`idorder`, `username`, `idproduct`),
-  INDEX `user_idx` (`username` ASC),
-  INDEX `product_idx` (`idproduct` ASC),
   CONSTRAINT `orderproduct`
     FOREIGN KEY (`idproduct`)
     REFERENCES `games`.`product` (`idproduct`)
@@ -123,7 +123,12 @@ CREATE TABLE IF NOT EXISTS `games`.`order` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8;
+
+CREATE INDEX `user_idx` ON `games`.`order` (`username` ASC);
+
+CREATE INDEX `product_idx` ON `games`.`order` (`idproduct` ASC);
 
 
 -- -----------------------------------------------------
@@ -137,7 +142,6 @@ CREATE TABLE IF NOT EXISTS `games`.`review` (
   `score` INT(11) NOT NULL,
   `comment` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`username`, `idproduct`),
-  INDEX `product_review_idx` (`idproduct` ASC),
   CONSTRAINT `product_review`
     FOREIGN KEY (`idproduct`)
     REFERENCES `games`.`product` (`idproduct`)
@@ -150,6 +154,8 @@ CREATE TABLE IF NOT EXISTS `games`.`review` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+CREATE INDEX `product_review_idx` ON `games`.`review` (`idproduct` ASC);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

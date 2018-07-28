@@ -10,7 +10,7 @@ export default ({ title, successMsg }) => WrappedComponent => {
       this.state = { alert: null };
     }
 
-    alert(alertMsg, callback = () => {}) {
+    alert(alertMsg, callback = () => { }) {
       const getAlert = alertMsg => (
         <SweetAlert
           danger={alertMsg}
@@ -18,7 +18,9 @@ export default ({ title, successMsg }) => WrappedComponent => {
           title={alertMsg ? `${title} failed!` : title}
           onConfirm={() => {
             this.hideAlert();
-            callback();
+            if (!alertMsg) {
+              callback();
+            }
           }}
         >
           {alertMsg || successMsg}

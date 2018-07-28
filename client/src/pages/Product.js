@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
 import { ProductDetail } from 'components';
-import { ReviewForm } from 'containers'
+import { ReviewForm, AddToCart } from 'containers'
 import { platforms } from 'utilities';
 
 class Product extends Component {
@@ -14,9 +14,15 @@ class Product extends Component {
         <Helmet>
           <title>{`Video Game Store - ${this.props.product.title}`}</title>
         </Helmet>
-        <ProductDetail product={this.props.product} platforms={platforms} />
-        <div style={{ marginTop: '60px' }}>
-          <ReviewForm />
+        <div className="row div-margin">
+          <ProductDetail product={this.props.product} platforms={platforms}>
+            <AddToCart productId={this.props.product.idproduct} />
+          </ProductDetail>
+        </div>
+        <div className="row div-margin">
+          <div style={{ marginTop: '60px' }}>
+            <ReviewForm />
+          </div>
         </div>
       </div>
     );

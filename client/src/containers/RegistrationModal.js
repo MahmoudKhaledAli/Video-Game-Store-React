@@ -108,6 +108,6 @@ const enhance = compose(
   alert({ title: 'Sign up', successMsg: 'Signed up successfully!' }),
   withRouter,
   connect(mapStateToProps, { signup })
-)
+);
 
 export default enhance(RegistrationModal)
