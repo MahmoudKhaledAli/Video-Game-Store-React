@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import _ from 'lodash';
 
-import { UserOrder } from 'containers';
+import { UserOrder } from 'components';
 
 class UserOrderList extends Component {
   renderWithLayout(cart) {

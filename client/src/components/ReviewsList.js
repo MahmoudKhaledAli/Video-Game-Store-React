@@ -3,6 +3,9 @@ import React from 'react';
 import { Review } from 'components'
 
 export default ({ reviews }) => {
+  if (!reviews.length) {
+    return <h3>No reviews</h3>;
+  }
   return (
     <div className="row">
       <div className="col-lg-12">

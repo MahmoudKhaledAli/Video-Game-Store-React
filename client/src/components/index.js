@@ -10,3 +10,5 @@ export { default as ProductsList } from './ProductsList';
 export { default as ProductShow } from './ProductShow';
 export { default as ReviewsList } from './ReviewsList';
 export { default as Review } from './Review';
+export { default as AddToCart } from './AddToCart';
+export { default as UserOrder } from './UserOrder';

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { Helmet } from 'react-helmet';
 
-import { ProductDetail } from 'components';
-import { ReviewForm, AddToCart } from 'containers';
+import { ProductDetail, AddToCart } from 'components';
+import { ReviewForm } from 'containers';
 import { fetchProduct } from 'actions';
 import { platforms } from 'utilities';
 

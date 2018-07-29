@@ -86,8 +86,10 @@ exports.fetchProduct = async (req, res, next) => {
     const productReviews = await connection.query(
       "SELECT product.*, review.* FROM product LEFT JOIN review ON product.idproduct = review.idproduct WHERE\
        product.idproduct = ?",
-      [req.query.idproduct]);
+      [req.query.idproduct]
+    );
 
+    productReviews[0].idproduct = req.query.idproduct;
     productReviews[0].avg_score = _.meanBy(productReviews, 'score');;
 
     res.json(productReviews);

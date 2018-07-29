@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 
 import { requireAuth } from 'components';
-import AddToCartButton from 'containers/AddToCartButton';
+import { AddToCartButton } from 'containers';
 
 class AddToCart extends Component {
   constructor(props) {

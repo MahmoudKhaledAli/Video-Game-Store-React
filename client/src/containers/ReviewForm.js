@@ -57,7 +57,7 @@ class ReviewFrom extends Component {
       <div>
         <h2>Rate This Product</h2>
         <Formik
-          initialValues={{ rating: '5', review: '' }}
+          initialValues={{ score: '5', review: '' }}
           onSubmit={this.handleFormSubmit.bind(this)}
           render={this.renderForm}
         />
