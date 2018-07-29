@@ -16,7 +16,7 @@ exports.addToCart = async (req, res, next) => {
 
     const oldCartItem = (await connection.query(
       "SELECT quantity FROM cart WHERE username = ? AND idproduct = ?",
-      [req.user.username, req.body.id]
+      [req.user.username, req.body.idproduct]
     ));
 
     let oldQuantity = 0;
@@ -25,8 +25,12 @@ exports.addToCart = async (req, res, next) => {
       oldQuantity = oldCartItem[0].quantity;
     }
 
+    console.log(oldQuantity);
+
+
     if (product.stock < req.body.quantity - oldQuantity) {
-      throw ('NO');
+      res.status(422);
+      return res.send('Not enough items in stock');
     }
 
     await connection.query(
@@ -80,7 +84,9 @@ exports.fetchCart = async (req, res, next) => {
       };
     });
 
-    res.json(cartItems);
+    const total = _.sumBy(cartItems, 'final_price');
+
+    res.json({ cartItems, total });
   } catch (err) {
     next(err);
   } finally {
@@ -97,14 +103,26 @@ exports.checkout = async (req, res, next) => {
 
     await connection.query('START TRANSACTION');
 
-    const cartItems = await connection.query(
+    const cartItemsAction = connection.query(
       "SELECT * FROM cart WHERE username = ?",
       [req.user.username]
     );
 
+
+    const selectActions = [cartItemsAction];
+
+    if (req.body.coupon !== '') {
+      selectActions.push(connection.query(
+        "SELECT * FROM coupon WHERE idcoupon = ? and amount > 0",
+        [req.body.coupon]
+      ));
+    }
+
+    const [cartItems, coupon] = await Promise.all(selectActions);
+
     const insertActions = cartItems.map(cartItem => connection.query(
       "INSERT INTO `games`.`order` (username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?)",
-      [req.user.username, cartItem.idproduct, cartItem.quantity, 0, new Date(), req.body.total]
+      [req.user.username, cartItem.idproduct, cartItem.quantity, 0, new Date(), coupon ? req.body.total * (100 - coupon[0].discount) / 100 : req.body.total]
     ));
 
     const updateActions = cartItems.map(cartItem => connection.query(
@@ -117,11 +135,56 @@ exports.checkout = async (req, res, next) => {
       [req.user.username]
     );
 
+    let actions = [...insertActions, ...updateActions, deleteAction];
+
+    if (coupon) {
+      actions.push(connection.query(
+        "UPDATE coupon SET amount = amount - 1 WHERE idcoupon = ?",
+        [req.body.coupon]
+      ));
+    }
+
     await Promise.all([...insertActions, ...updateActions, deleteAction]);
 
     await connection.query('COMMIT');
 
     res.json({ success: 'Order Placed' });
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.deleteCartItem = async (req, res, next) => {
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    await connection.query('START TRANSACTION');
+
+    const cartItem = (await connection.query(
+      "SELECT * FROM cart INNER JOIN product ON cart.idproduct = product.idproduct WHERE cart.idproduct = ? AND username = ?",
+      [req.body.idproduct, req.user.username]
+    ))[0];
+
+    const deleteAction = connection.query(
+      "DELETE FROM cart WHERE idproduct = ? AND username = ?",
+      [req.body.idproduct, req.user.username]
+    );
+
+    const updateAction = connection.query(
+      "UPDATE product SET stock = stock + ? WHERE idproduct = ?",
+      [cartItem.quantity, req.body.idproduct]
+    );
+
+    await Promise.all([deleteAction, updateAction]);
+
+    await connection.query('COMMIT');
+
+    res.json({ idproduct: cartItem.idproduct, final_price: (100 - cartItem.sale) * cartItem.price * cartItem.quantity / 100 });
   } catch (err) {
     next(err);
   } finally {

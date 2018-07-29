@@ -63,8 +63,8 @@ function mapStateToProps(state) {
 }
 
 const enhance = compose(
-  connect(mapStateToProps, { signout }),
   withRouter,
+  connect(mapStateToProps, { signout }),
   alert({ title: 'Sign out', successMsg: 'Logged out successfully' })
 )
 

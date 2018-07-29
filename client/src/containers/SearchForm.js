@@ -16,10 +16,16 @@ class SearchForm extends Component {
     this.renderForm = this.renderForm.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.pageNo !== this.props.pageNo) {
+      this.refs.form.handleSubmit();
+    }
+  }
+
   componentDidMount() {
     this.props.search({
       name: "",
-      pageNo: 1,
+      pageNo: this.props.pageNo,
       field: "product.idproduct",
       order: "desc",
       platform: -1
@@ -28,7 +34,7 @@ class SearchForm extends Component {
 
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
-    this.props.search({ ...values, platform: this.state.platform, pageNo: 1 });
+    this.props.search({ ...values, platform: this.state.platform, pageNo: this.props.pageNo });
   }
 
   handleButton(event) {
@@ -89,6 +95,7 @@ class SearchForm extends Component {
       <div>
         <h1 className="my-4">Search</h1>
         <Formik
+          ref="form"
           initialValues={{ name: '', field: 'product.idproduct', order: 'DESC' }}
           onSubmit={this.handleFormSubmit.bind(this)}
           render={this.renderForm}

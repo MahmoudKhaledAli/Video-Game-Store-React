@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { Button } from 'react-bootstrap';
+
+import { AddToCartButton } from 'containers';
+import { deleteItem } from 'actions';
 
 import 'styles/style.css';
 
 class CartItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { quantity: this.props.cartItem.quantity };
+  }
+
+  handleInputChange(event) {
+    this.setState({ quantity: event.target.value });
+  }
+
+  handleDeleteClick() {
+    this.props.deleteItem(this.props.cartItem.idproduct);
+  }
+
   render() {
-    const { product: { name, platform, price, sale }, quantity, final_price } = this.props.cartItem;
+    const { product: { idproduct, name, platform, price, sale }, final_price } = this.props.cartItem;
 
     return (
       <tr>
@@ -14,21 +32,21 @@ class CartItem extends Component {
         <td>{this.props.platforms[platform]}</td>
         <td>
           <div className="col-xs-4">
-            <input className="form-control" type="number" name="quantity" value={quantity} />
+            <input onChange={this.handleInputChange.bind(this)} className="form-control" type="number" name="quantity" value={this.state.quantity} />
           </div>
         </td>
         <td>{price}</td>
         <td>{sale}</td>
         <td>{final_price}</td>
         <td>
-          <Button>Update Item</Button>
+          <AddToCartButton idproduct={idproduct} quantity={this.state.quantity} />
         </td>
         <td>
-          <Button bsSize="danger">Delete Item</Button>
+          <Button onClick={this.handleDeleteClick.bind(this)} bsStyle="danger">Delete Item</Button>
         </td>
       </tr>
     );
   }
 }
 
-export default CartItem;
+export default connect(null, { deleteItem })(CartItem);

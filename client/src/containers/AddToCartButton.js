@@ -18,7 +18,7 @@ class AddToCartButton extends Component {
   render() {
     return (
       <Button onClick={this.handleClick.bind(this)} bsStyle="success" bsSize={this.props.size}>
-        <span className="glyphicon glyphicon-shopping-cart" /> Add To Cart
+        <div><span className="glyphicon glyphicon-shopping-cart" /> Add To Cart</div>
       </Button>
     );
   }

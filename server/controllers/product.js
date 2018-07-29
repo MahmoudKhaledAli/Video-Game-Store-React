@@ -5,6 +5,8 @@ const resultsPerPage = 6;
 
 exports.productSearch = async (req, res, next) => {
   let connection;
+  console.log(req.body);
+  
 
   const platformQuery = `SELECT COUNT(*) as count, product.*, AVG(review.score) AS avg_score
   FROM product LEFT JOIN review ON product.idproduct = review.idproduct
@@ -16,7 +18,7 @@ exports.productSearch = async (req, res, next) => {
     req.body.platform,
     '%' + req.body.name + '%',
     resultsPerPage,
-    (req.body.pageNo - 1) * resultsPerPage
+    (req.body.pageNo) * resultsPerPage
   ];
 
   const query = `SELECT COUNT(*) as count, product.*, AVG(review.score) AS avg_score
@@ -28,7 +30,7 @@ exports.productSearch = async (req, res, next) => {
   const queryParameters = [
     '%' + req.body.name + '%',
     resultsPerPage,
-    (req.body.pageNo - 1) * resultsPerPage
+    (req.body.pageNo) * resultsPerPage
   ];
 
   try {
@@ -42,11 +44,11 @@ exports.productSearch = async (req, res, next) => {
     }
 
     if (!searchResults.length) {
-      return res.send(null);
+      return res.send('No results');
     }
 
     const response = {
-      count: searchResults[0].count,
+      count: Math.ceil(searchResults[0].count / resultsPerPage),
       products: searchResults.map(result => _.omit(result, 'count'))
     }
 
@@ -71,6 +73,28 @@ exports.fetchFeatured = async (req, res, next) => {
     const [topSellers, highestRated] = await Promise.all([topSellersQuery, highestRatedQuery]);
 
     res.json({ topSellers, highestRated });
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.fetchProduct = async (req, res, next) => {
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    const productReviews = await connection.query(
+      "SELECT product.*, review.* FROM product LEFT JOIN review ON product.idproduct = review.idproduct WHERE\
+       product.idproduct = ?",
+      [req.query.idproduct]);
+
+    productReviews[0].avg_score = _.meanBy(productReviews, 'score');;
+
+    res.json(productReviews);
   } catch (err) {
     next(err);
   } finally {

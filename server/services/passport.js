@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local').Strategy;
+const _ = require('lodash');
 
 const localLogin = new LocalStrategy({}, (username, password, done) => {
   let connection;
@@ -24,7 +25,7 @@ const localLogin = new LocalStrategy({}, (username, password, done) => {
     }
   }).then(isMatch => {
     if (isMatch) {
-      done(null, user);
+      done(null, _.pick(user, ['username', 'address']));
     } else {
       done(null, false, { message: 'Wrong password.' });
     }
@@ -55,7 +56,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
     );
   }).then(rows => {
     if (rows.length) {
-      done(null, rows[0]);
+      done(null, _.pick(rows[0], ['username', 'address']));
     } else {
       done(null, false);
     }

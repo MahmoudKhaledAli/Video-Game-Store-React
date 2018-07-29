@@ -12,7 +12,7 @@ export function productsReducer(state = INITIAL_STATE, action) {
       return { ...state, ...newProduct }
 
     case FETCH_CART:
-      const newProducts = action.payload.map(cartItem => {
+      const newProducts = action.payload.cartItems.map(cartItem => {
         let newProduct = {};
         newProduct[cartItem.idproduct] = cartItem.product;
         return newProduct;
@@ -52,19 +52,18 @@ export function featuredReducer(state = { topSellersIds: [], highestRatedIds: []
     default:
       return state;
   }
-  // return {
-  //   topSellersIds: [1, 2],
-  //   highestRatedIds: [2, 3]
-  // };
 }
 
-export function searchReducer(state = [], action) {
+export function searchReducer(state = { resultsIds: [], pageCount: 0 }, action) {
   switch (action.type) {
     case SEARCH:
       if (action.payload.products) {
-        return action.payload.products.map(product => product.idproduct);
+        return {
+          resultsIds: action.payload.products.map(product => product.idproduct),
+          pageCount: action.payload.count
+        };
       } else {
-        return [];
+        return { resultsIds: [], pageCount: 0 };
       }
 
     default:

@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 const productsSelector = state => state.products;
 const topSellersSelector = state => state.featured.topSellersIds;
 const highestRatedSelector = state => state.featured.highestRatedIds;
-const searchResultsSelector = state => state.searchIds;
+const searchResultsSelector = state => state.search.resultsIds;
 
 const getProducts = (products, Ids) => {
   return Ids.map(Id => products[Id]);

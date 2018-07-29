@@ -10,5 +10,6 @@ router.post('/signup', Authentication.signup);
 router.post('/signin', requireSignin, Authentication.fetchUserInfo);
 router.post('/search', Product.productSearch);
 router.get('/fetchfeatured', Product.fetchFeatured);
+router.get('/fetchproduct', Product.fetchProduct);
 
 module.exports = router;

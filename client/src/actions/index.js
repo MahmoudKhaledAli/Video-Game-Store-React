@@ -56,7 +56,7 @@ export const signin = (loginInfo, callback) => async dispatch => {
       payload
     });
     callback();
-    
+
   } finally {
     callback();
   }
@@ -156,4 +156,24 @@ export const fetchProduct = id => async dispatch => {
     type: ActionTypes.FETCH_PRODUCT,
     payload: response.data
   });
-}
+};
+
+export const deleteItem = idproduct => async dispatch => {
+  const response = await axios.post('http://localhost:8080/user/deletecart', { idproduct });
+
+  dispatch({
+    type: ActionTypes.DELETE_CART_ITEM,
+    payload: response.data
+  });
+};
+
+export const checkout = (total, coupon, callback) => async dispatch => {
+  await axios.post('http://localhost:8080/user/checkout', { total, coupon });
+
+  dispatch({
+    type: ActionTypes.CHECKOUT,
+    payload: {}
+  });
+
+  callback();
+};

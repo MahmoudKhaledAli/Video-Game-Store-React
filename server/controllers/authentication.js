@@ -29,7 +29,11 @@ exports.signup = async (req, res, next) => {
 
     if (existingUsers.length) {
       res.status(422);
-      return next(new Error('Email or username already registered'));
+      if (existingUsers[0].email == email) {
+        res.send('Email already registered');
+      } else {
+        res.send('Username already exists');
+      }
     }
 
     await connection.query(

@@ -13,5 +13,7 @@ router.post('/updateaddress', User.updateAddress);
 router.post('/addtocart', Cart.addToCart);
 router.get('/fetchcart', Cart.fetchCart);
 router.post('/checkout', Cart.checkout);
+router.post('/addreview', User.addReview);
+router.post('/deletecart', Cart.deleteCartItem);
 
 module.exports = router;
