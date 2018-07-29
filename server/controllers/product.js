@@ -6,10 +6,9 @@ const resultsPerPage = 6;
 exports.productSearch = async (req, res, next) => {
   let connection;
 
-  const platformQuery = `SELECT COUNT(*) as count, product.*, AVG(review.score) AS avg_score
+  const platformQuery = `SELECT product.*, AVG(review.score) as avg_score, COUNT(*) OVER() as count
   FROM product LEFT JOIN review ON product.idproduct = review.idproduct
-  WHERE platform = ? AND name LIKE ? GROUP BY product.idproduct ORDER BY
-  ${req.body.field} ${req.body.order}
+  WHERE platform = ? AND name LIKE ? GROUP BY product.idproduct ORDER BY ${req.body.field} ${req.body.order}
   LIMIT ? OFFSET ?`;
 
   const platformQueryParameters = [
@@ -19,10 +18,9 @@ exports.productSearch = async (req, res, next) => {
     (req.body.pageNo) * resultsPerPage
   ];
 
-  const query = `SELECT COUNT(*) as count, product.*, AVG(review.score) AS avg_score
+  const query = `SELECT product.*, AVG(review.score) as avg_score, COUNT(*) OVER() as count
   FROM product LEFT JOIN review ON product.idproduct = review.idproduct
-  WHERE name LIKE ? GROUP BY product.idproduct ORDER BY
-  ${req.body.field} ${req.body.order}
+  WHERE name LIKE ? GROUP BY product.idproduct ORDER BY ${req.body.field} ${req.body.order}
   LIMIT ? OFFSET ?`;
 
   const queryParameters = [
@@ -59,7 +57,7 @@ exports.productSearch = async (req, res, next) => {
   }
 }
 
-exports.fetchFeatured = async (req, res, next) => {
+exports.fetchFeatured = async (_, res, next) => {
   let connection;
 
   try {

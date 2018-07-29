@@ -46,9 +46,9 @@ class SearchForm extends Component {
       <form className="form-group" onSubmit={props.handleSubmit}>
         <div className="list-group">
           <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="-1" className="list-group-item">All</button>
-          <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="1" className="list-group-item">PC</button>
-          <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="2" className="list-group-item">PS4</button>
-          <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="3" className="list-group-item">Xbox One</button>
+          <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="0" className="list-group-item">PC</button>
+          <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="1" className="list-group-item">PS4</button>
+          <button style={{ marginBottom: '0px' }} type="submit" onClick={this.handleButton} value="2" className="list-group-item">Xbox One</button>
         </div>
         <input
           className="form-control"
