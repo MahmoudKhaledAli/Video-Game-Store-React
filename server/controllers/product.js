@@ -5,8 +5,6 @@ const resultsPerPage = 6;
 
 exports.productSearch = async (req, res, next) => {
   let connection;
-  console.log(req.body);
-  
 
   const platformQuery = `SELECT COUNT(*) as count, product.*, AVG(review.score) AS avg_score
   FROM product LEFT JOIN review ON product.idproduct = review.idproduct

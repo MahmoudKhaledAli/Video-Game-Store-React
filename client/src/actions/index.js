@@ -49,7 +49,7 @@ export const signin = (loginInfo, callback) => async dispatch => {
       localStorage.setItem('token', response.data.token);
     }
   } catch (err) {
-    const payload = (err.response ? err.response.data : err).replace('Unauthorized', 'Incorrent login information');
+    const payload = err.response ? err.response.data.replace('Unauthorized', 'Incorrent login information') : err;
 
     await dispatch({
       type: ActionTypes.AUTH_ERROR,
@@ -82,7 +82,7 @@ export const fetchUserInfo = () => async dispatch => {
       payload: response.data
     });
   } catch (err) {
-    const payload = (err.response ? err.response.data : err).replace('Unauthorized', 'Invalid or expired token');
+    const payload = err.response ? err.response.data.replace('Unauthorized', 'Invalid or expired token') : err;
 
     dispatch({
       type: ActionTypes.AUTH_ERROR,
@@ -105,7 +105,7 @@ export const addToCart = (cartItem, callback) => async dispatch => {
     dispatch({
       type: ActionTypes.ADD_TO_CART_ERROR,
       payload
-    })
+    });
   } finally {
     callback();
   }
@@ -168,12 +168,21 @@ export const deleteItem = idproduct => async dispatch => {
 };
 
 export const checkout = (total, coupon, callback) => async dispatch => {
-  await axios.post('http://localhost:8080/user/checkout', { total, coupon });
+  try {
+    await axios.post('http://localhost:8080/user/checkout', { total, coupon });
 
-  dispatch({
-    type: ActionTypes.CHECKOUT,
-    payload: {}
-  });
+    dispatch({
+      type: ActionTypes.CHECKOUT,
+      payload: {}
+    });
+  } catch (err) {
+    const payload = err.response ? err.response.data : err;
 
-  callback();
+    dispatch({
+      type: ActionTypes.CHECKOUT_ERROR,
+      payload
+    })
+  } finally {
+    callback();
+  }
 };

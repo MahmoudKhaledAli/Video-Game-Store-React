@@ -10,3 +10,4 @@ export const FETCH_PRODUCT = 'fetch_product';
 export const ADD_TO_CART_ERROR = 'add_to_cart_error';
 export const DELETE_CART_ITEM = 'delete_cart_item';
 export const CHECKOUT = 'checkout';
+export const CHECKOUT_ERROR = 'checkout_error';

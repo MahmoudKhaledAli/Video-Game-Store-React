@@ -11,8 +11,6 @@ export default ({ title, successMsg }) => WrappedComponent => {
     }
 
     alert(callback = () => { }) {
-      console.log(this.props.errorMessage);
-      
       const getAlert = alertMsg => (
         <SweetAlert
           danger={alertMsg}

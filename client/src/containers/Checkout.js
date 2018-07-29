@@ -35,7 +35,13 @@ class Checkout extends Component {
           <h2>Coupon</h2>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="text-left form-group">
-              <input style={{ width: '53%' }} type="text" className="form-control input-lg" value={this.state.coupon} />
+              <input
+                onChange={this.handleCouponChange.bind(this)}
+                style={{ width: '53%' }}
+                type="text"
+                className="form-control input-lg"
+                value={this.state.coupon}
+              />
             </div>
             <Button type="submit" bsStyle="primary" bsSize="lg">Place Order</Button>
           </form>
@@ -49,7 +55,8 @@ class Checkout extends Component {
 function mapStateToProps(state) {
   return {
     cartItems: state.cart.cartItems !== {},
-    total: state.cart.total
+    total: state.cart.total,
+    errorMessage: state.errors.checkout
   }
 }
 

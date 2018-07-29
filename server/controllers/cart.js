@@ -25,9 +25,6 @@ exports.addToCart = async (req, res, next) => {
       oldQuantity = oldCartItem[0].quantity;
     }
 
-    console.log(oldQuantity);
-
-
     if (product.stock < req.body.quantity - oldQuantity) {
       res.status(422);
       return res.send('Not enough items in stock');
@@ -119,6 +116,11 @@ exports.checkout = async (req, res, next) => {
     }
 
     const [cartItems, coupon] = await Promise.all(selectActions);
+
+    if (req.body.coupon !== '' && !coupon.length) {
+      res.status(422)
+      return res.send('Coupon does not exist');
+    }
 
     const insertActions = cartItems.map(cartItem => connection.query(
       "INSERT INTO `games`.`order` (username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?)",
