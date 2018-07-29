@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import reducers from 'reducers';
 
-const baseApiAddress = 'http://localhost:8080/';
+const baseApiAddress = 'http://localhost:8080/user/';
 
 if (!localStorage.getItem('token')) {
   localStorage.removeItem('token');

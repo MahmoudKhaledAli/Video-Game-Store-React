@@ -42,7 +42,7 @@ exports.productSearch = async (req, res, next) => {
     }
 
     if (!searchResults.length) {
-      return res.send('No results matching your search');
+      return res.send(null);
     }
 
     const response = {
@@ -51,6 +51,26 @@ exports.productSearch = async (req, res, next) => {
     }
 
     res.json(response);
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.fetchFeatured = async (req, res, next) => {
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    const topSellersQuery = connection.query("SELECT * FROM product ORDER BY sales DESC LIMIT 4");
+    const highestRatedQuery = connection.query("SELECT product.*, AVG(review.score) FROM product LEFT JOIN review ON product.idproduct = review.idproduct GROUP BY product.idproduct ORDER BY AVG(review.score) DESC LIMIT 4");
+
+    const [topSellers, highestRated] = await Promise.all([topSellersQuery, highestRatedQuery]);
+
+    res.json({ topSellers, highestRated });
   } catch (err) {
     next(err);
   } finally {

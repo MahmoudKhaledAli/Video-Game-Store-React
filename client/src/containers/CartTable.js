@@ -19,6 +19,8 @@ class CartTable extends Component {
 
   render() {
     const { cartItems } = this.props;
+    console.log(cartItems);
+    
 
     if (cartItems.length === 0) {
       return this.renderWithLayout(<h1 align="center">Your cart is empty!</h1>);

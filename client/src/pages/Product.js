@@ -12,7 +12,7 @@ class Product extends Component {
     return (
       <div>
         <Helmet>
-          <title>{`Video Game Store - ${this.props.product.title}`}</title>
+          <title>{`Video Game Store - ${this.props.product.name}`}</title>
         </Helmet>
         <div className="row div-margin">
           <ProductDetail product={this.props.product} platforms={platforms}>

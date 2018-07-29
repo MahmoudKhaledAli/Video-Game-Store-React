@@ -13,8 +13,10 @@ const defaultState = {
 export function cartReducer(state = defaultState, action) {
   switch (action.type) {
     case ADD_TO_CART:
+    console.log(action.payload);
+    
       return {
-        cartItems: [...state.cart, _.omit(action.payload, 'product')],
+        cartItems: [...state.cartItems, _.omit(action.payload, 'product')],
         total: state.total + action.payload.final_price
       }
 

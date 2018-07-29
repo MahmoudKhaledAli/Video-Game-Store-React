@@ -1,3 +1,4 @@
+export { default as ProductShow } from './ProductShow';
 export { default as CartTable } from './CartTable';
 export { default as BrowseList } from './BrowseList';
 export { default as HighestRated } from './HighestRated';

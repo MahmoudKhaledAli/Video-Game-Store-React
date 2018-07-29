@@ -1,59 +1,42 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { Formik } from 'formik';
-
-import { requireAuth, alert } from 'components';
-import { addToCart } from 'actions';
+import { requireAuth } from 'components';
+import AddToCartButton from 'containers/AddToCartButton';
 
 class AddToCart extends Component {
-  handleFormSubmit(values, actions) {
-    actions.setSubmitting(false);
-    this.props.addToCart({ idproduct: this.props.productId, ...values }, () => {
-      this.props.alert('');
-    })
+  constructor(props) {
+    super(props);
+
+    this.state = { quantity: 1 };
   }
 
-  renderForm(props) {
-    return (
-      <form onSubmit={props.handleSubmit}>
-        <div className="form-group">
-          <input
-            type="number"
-            min="1"
-            max={props.stock}
-            className="form-control"
-            style={{ width: '100px' }}
-            name="quantity"
-            onChange={props.handleChange}
-            onBlur={props.handleBlur}
-            value={props.values.quantity}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-success btn-md">
-          <span className="glyphicon glyphicon-shopping-cart" /> Add To Cart
-        </button>
-      </form>
-    );
+  handleInputChange(event) {
+    this.setState({ quantity: event.target.value });
   }
 
   render() {
     return (
-      <Formik
-        initialValues={{ quantity: '1' }}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        render={this.renderForm}
-      />
+      <div>
+        <div className="form-group">
+          <input
+            onChange={this.handleInputChange.bind(this)}
+            type="number"
+            min="1"
+            max={this.props.stock}
+            className="form-control"
+            style={{ width: '100px' }}
+            value={this.state.quantity}
+          />
+        </div>
+        <AddToCartButton idproduct={this.props.productId} size="lg" quantity={this.state.quantity} />
+      </div>
     );
   }
 }
 
 const enhance = compose(
-  requireAuth(false),
-  connect(null, { addToCart }),
-  alert({ title: 'Add to cart', successMsg: 'Product added to cart!' })
+  requireAuth(false)
 );
 
 export default enhance(AddToCart);

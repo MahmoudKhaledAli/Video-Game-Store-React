@@ -59,7 +59,7 @@ export const signin = (loginInfo, callback) => async dispatch => {
 };
 
 export const updateAddress = (newAddress, callback) => async dispatch => {
-  const response = await axios.post('http://localhost:8080/updateaddress', { address: newAddress });
+  const response = await axios.post('http://localhost:8080/user/updateaddress', { address: newAddress });
 
   dispatch({
     type: ActionTypes.UPDATE_ADDRESS,
@@ -71,7 +71,7 @@ export const updateAddress = (newAddress, callback) => async dispatch => {
 
 export const fetchUserInfo = () => async dispatch => {
   try {
-    const response = await axios.get('http://localhost:8080/fetchuserinfo');
+    const response = await axios.get('http://localhost:8080/user/fetchuserinfo');
 
     dispatch({
       type: ActionTypes.AUTH_USER,
@@ -86,7 +86,7 @@ export const fetchUserInfo = () => async dispatch => {
 };
 
 export const addToCart = (cartItem, callback) => async dispatch => {
-  const response = await axios.post('http://localhost:8080/addtocart', cartItem);
+  const response = await axios.post('http://localhost:8080/user/addtocart', cartItem);
 
   dispatch({
     type: ActionTypes.ADD_TO_CART,
@@ -97,10 +97,28 @@ export const addToCart = (cartItem, callback) => async dispatch => {
 };
 
 export const fetchCart = () => async dispatch => {
-  const response = await axios.get('http://localhost:8080/fetchcart');
+  const response = await axios.get('http://localhost:8080/user/fetchcart');
 
   dispatch({
     type: ActionTypes.FETCH_CART,
     payload: response.data
-  })
+  });
 };
+
+export const fetchFeatured = () => async dispatch => {
+  const response = await axios.get('http://localhost:8080/fetchfeatured');
+
+  dispatch({
+    type: ActionTypes.FETCH_FEATURED,
+    payload: response.data
+  });
+}
+
+export const search = (searchValues) => async dispatch => {
+  const response = await axios.post('http://localhost:8080/search', searchValues);
+
+  dispatch({
+    type: ActionTypes.SEARCH,
+    payload: response.data
+  });
+}

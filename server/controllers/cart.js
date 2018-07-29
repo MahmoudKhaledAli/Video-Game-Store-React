@@ -12,7 +12,7 @@ exports.addToCart = async (req, res, next) => {
     const product = (await connection.query(
       "SELECT * FROM product WHERE idproduct = ?",
       [req.body.idproduct]
-    ));
+    ))[0];
 
     const oldCartItem = (await connection.query(
       "SELECT quantity FROM cart WHERE username = ? AND idproduct = ?",
@@ -43,7 +43,7 @@ exports.addToCart = async (req, res, next) => {
     await connection.query('COMMIT');
 
     res.json({
-      idproduct: req.body.id,
+      idproduct: req.body.idproduct,
       quantity: req.body.quantity,
       final_price: (100 - product.sale) * product.price * req.body.quantity / 100,
       product: { ...product, stock: product.stock - req.body.quantity + oldQuantity }
@@ -69,7 +69,7 @@ exports.fetchCart = async (req, res, next) => {
        WHERE username = ?",
       [req.user.username],
     );
-    
+
     cartItems = cartItems.map(cartItem => {
       const { idproduct, name, price, stock, imgpath, platform, description, sales, sale } = cartItem;
       return {

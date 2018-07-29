@@ -1,21 +1,8 @@
-import { ADD_TO_CART, FETCH_CART } from 'actions/types';
+import _ from 'lodash';
 
-const url1 = 'https://im.ziffdavisinternational.com/ign_me/screenshot/f/fifa-13-adds-ksa-league-teams-features-abdullaziz/fifa-13-adds-ksa-league-teams-features-abdullaziz_7gww.jpg'
-const url2 = 'https://vignette.wikia.nocookie.net/injusticegodsamongus/images/1/10/Injustice_2_Ultimate_Edition_PS4_cover.jpg/revision/latest?cb=20170124010821'
-const url3 = 'https://www.cosmicbooknews.com/sites/default/files/spider-man-ps4-box-art.jpg'
-const products = {
-  1: {
-    imgpath: url1, idproduct: 1, name: 'FIFA 13', price: 100, description: 'The best game in the whole world', avg_score: 4, platform: 0, stock: 5, sale: 100
-  },
-  2: {
-    imgpath: url2, idproduct: 2, name: 'Injustice 2', price: 400, description: 'The best game in the whole world 2', avg_score: 4, platform: 0, stock: 5, sale: 100
-  },
-  3: {
-    imgpath: url3, idproduct: 3, name: 'Spider-man', price: 600, description: 'The best game in the whole world 3', avg_score: 4, platform: 0, stock: 5, sale: 100
-  }
-};
+import { ADD_TO_CART, FETCH_CART, FETCH_FEATURED, SEARCH } from 'actions/types';
 
-const INITIAL_STATE = products;
+const INITIAL_STATE = {};
 
 export function productsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -32,6 +19,15 @@ export function productsReducer(state = INITIAL_STATE, action) {
       });
       return Object.assign({}, state, ...newProducts);
 
+    case FETCH_FEATURED:
+      return {
+        ...state,
+        ..._.mapKeys(action.payload.topSellers, 'idproduct'),
+        ..._.mapKeys(action.payload.highestRated, 'idproduct')
+      }
+
+    case SEARCH:
+      return { ...state, ..._.mapKeys(action.payload.products, 'idproduct') };
 
     default:
       return state;
@@ -42,9 +38,35 @@ export function currentProductReducer(state = null, action) {
   return 1;
 }
 
-export function featuredReducer(state = {}, action) {
-  return {
-    topSellersIds: [1, 2],
-    highestRatedIds: [2, 3]
-  };
+export function featuredReducer(state = { topSellersIds: [], highestRatedIds: [] }, action) {
+  switch (action.type) {
+    case FETCH_FEATURED:
+      return {
+        topSellersIds: action.payload.topSellers.map(product => product.idproduct),
+        highestRatedIds: action.payload.highestRated.map(product => product.idproduct)
+      };
+
+    default:
+      return state;
+  }
+  // return {
+  //   topSellersIds: [1, 2],
+  //   highestRatedIds: [2, 3]
+  // };
+}
+
+export function searchReducer(state = [], action) {
+  switch (action.type) {
+    case SEARCH:
+      console.log(action.payload);
+
+      if (action.payload.products) {
+        return action.payload.products.map(product => product.idproduct);
+      } else {
+        return [];
+      }
+
+    default:
+      return state;
+  }
 }
