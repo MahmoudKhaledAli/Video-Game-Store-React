@@ -11,11 +11,11 @@ export const signup = (userInfo, callback) => async dispatch => {
     });
     localStorage.setItem('token', response.data.token);
   } catch (err) {
-    console.log(err);
+    const payload = err.response ? err.response.data : err;
 
     dispatch({
       type: ActionTypes.AUTH_ERROR,
-      payload: 'Username or email already used'
+      payload
     });
   } finally {
     callback();
@@ -49,10 +49,14 @@ export const signin = (loginInfo, callback) => async dispatch => {
       localStorage.setItem('token', response.data.token);
     }
   } catch (err) {
-    dispatch({
+    const payload = (err.response ? err.response.data : err).replace('Unauthorized', 'Incorrent login information');
+
+    await dispatch({
       type: ActionTypes.AUTH_ERROR,
-      payload: 'Incorrect username or password'
+      payload
     });
+    callback();
+    
   } finally {
     callback();
   }
@@ -78,22 +82,33 @@ export const fetchUserInfo = () => async dispatch => {
       payload: response.data
     });
   } catch (err) {
+    const payload = (err.response ? err.response.data : err).replace('Unauthorized', 'Invalid or expired token');
+
     dispatch({
       type: ActionTypes.AUTH_ERROR,
-      payload: 'Invalid token'
+      payload
     });
   }
 };
 
 export const addToCart = (cartItem, callback) => async dispatch => {
-  const response = await axios.post('http://localhost:8080/user/addtocart', cartItem);
+  try {
+    const response = await axios.post('http://localhost:8080/user/addtocart', cartItem);
 
-  dispatch({
-    type: ActionTypes.ADD_TO_CART,
-    payload: response.data
-  });
+    dispatch({
+      type: ActionTypes.ADD_TO_CART,
+      payload: response.data
+    });
+  } catch (err) {
+    const payload = err.response ? err.response.data : err;
 
-  callback();
+    dispatch({
+      type: ActionTypes.ADD_TO_CART_ERROR,
+      payload
+    })
+  } finally {
+    callback();
+  }
 };
 
 export const fetchCart = () => async dispatch => {
@@ -112,13 +127,33 @@ export const fetchFeatured = () => async dispatch => {
     type: ActionTypes.FETCH_FEATURED,
     payload: response.data
   });
-}
+};
 
-export const search = (searchValues) => async dispatch => {
+export const search = searchValues => async dispatch => {
   const response = await axios.post('http://localhost:8080/search', searchValues);
 
   dispatch({
     type: ActionTypes.SEARCH,
+    payload: response.data
+  });
+};
+
+export const addReview = (review, callback) => async dispatch => {
+  const response = await axios.post('http://localhost:8080/user/addreview', review);
+
+  dispatch({
+    type: ActionTypes.ADD_REVIEW,
+    payload: response.data
+  });
+
+  callback();
+};
+
+export const fetchProduct = id => async dispatch => {
+  const response = await axios.get(`http://localhost:8080/fetchproduct?idproduct=${id}`);
+
+  dispatch({
+    type: ActionTypes.FETCH_PRODUCT,
     payload: response.data
   });
 }

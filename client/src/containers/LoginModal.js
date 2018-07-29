@@ -14,7 +14,7 @@ class LoginModal extends Component {
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
     this.props.signin(values, () => {
-      this.props.alert(this.props.errorMessage, () => {
+      this.props.alert(() => {
         this.props.onHide();
       });
     });
@@ -92,12 +92,12 @@ class LoginModal extends Component {
 }
 
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.errorMessage };
+  return { errorMessage: state.errors.auth };
 }
 
 const enhance = compose(
-  alert({ title: 'Sign in', successMsg: 'Logged in successfully' }),
-  connect(mapStateToProps, { signin })
+  connect(mapStateToProps, { signin }),
+  alert({ title: 'Sign in', successMsg: 'Logged in successfully' })
 )
 
 export default enhance(LoginModal);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import ProductShow from 'containers/ProductShow';
+import { ProductShow } from 'components';
 
 import 'styles/style.css'
 
@@ -11,8 +11,6 @@ export default class extends Component {
   }
 
   render() {
-    console.log(this.props.products);
-    
     if (!this.props.products.length) {
       return (
         <div className="col-lg-12 div-center div-margin">

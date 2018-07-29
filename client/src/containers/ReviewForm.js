@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
+import { connect } from 'react-redux';
 
 import { Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 
-import { requireAuth } from 'components';
+import { addReview } from 'actions';
+import { requireAuth, alert } from 'components';
 
 class ReviewFrom extends Component {
   renderForm(props) {
@@ -13,11 +15,11 @@ class ReviewFrom extends Component {
         <div className="form-group" onSubmit={props.handleSubmit}>
           <select
             className="form-control"
-            name="rating"
+            name="score"
             style={{ width: '5%' }}
             onChange={props.handleChange}
             onBlur={props.handleBlur}
-            value={props.values.rating}
+            value={props.values.score}
           >
             <option value='1'>1</option>
             <option value='2'>2</option>
@@ -29,12 +31,12 @@ class ReviewFrom extends Component {
         <div className="form-group">
           <textarea
             className="form-control"
-            name="review"
+            name="comment"
             rows="8" cols="80"
             placeholder="Write a comment (optional)"
             onChange={props.handleChange}
             onBlur={props.handleBlur}
-            value={props.values.review}
+            value={props.values.comment}
           />
         </div>
         <Button type="submit" bsSize="lg" bsStyle="primary">Submit</Button>
@@ -44,15 +46,19 @@ class ReviewFrom extends Component {
 
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
+
+    this.props.addReview({ idproduct: this.props.productId, ...values }, () => {
+      this.props.alert();
+    });
   }
 
   render() {
     return (
       <div>
-        <h1>Rate This Product</h1>
+        <h2>Rate This Product</h2>
         <Formik
           initialValues={{ rating: '5', review: '' }}
-          onSubmit={this.handleFormSubmit}
+          onSubmit={this.handleFormSubmit.bind(this)}
           render={this.renderForm}
         />
       </div>
@@ -61,7 +67,9 @@ class ReviewFrom extends Component {
 }
 
 const enhance = compose(
-  requireAuth(false)
+  requireAuth(false),
+  connect(null, { addReview }),
+  alert({ title: 'Add review', successMsg: 'Review added successfully!' })
 );
 
 export default enhance(ReviewFrom);

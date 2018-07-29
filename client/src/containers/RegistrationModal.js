@@ -15,7 +15,7 @@ class RegistrationModal extends Component {
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
     this.props.signup(values, () => {
-      this.props.alert(this.props.errorMessage, () => {
+      this.props.alert(() => {
         this.props.onHide();
         this.props.history.push('/');
       });
@@ -101,13 +101,13 @@ class RegistrationModal extends Component {
 }
 
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.errorMessage };
+  return { errorMessage: state.errors.auth };
 }
 
 const enhance = compose(
+  connect(mapStateToProps, { signup }),
   alert({ title: 'Sign up', successMsg: 'Signed up successfully!' }),
-  withRouter,
-  connect(mapStateToProps, { signup })
+  withRouter
 );
 
 export default enhance(RegistrationModal)

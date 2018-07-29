@@ -11,7 +11,7 @@ class AddToCartButton extends Component {
   handleClick(event) {
     event.preventDefault();
     this.props.addToCart({ idproduct: this.props.idproduct, quantity: this.props.quantity }, () => {
-      this.props.alert('');
+      this.props.alert();
     });
   }
 
@@ -24,9 +24,13 @@ class AddToCartButton extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { errorMessage: state.errors.addToCart };
+}
+
 const enhance = compose(
   requireAuth(false),
-  connect(null, { addToCart }),
+  connect(mapStateToProps, { addToCart }),
   alert({ title: 'Add to cart', successMsg: 'Product added to cart!' })
 );
 

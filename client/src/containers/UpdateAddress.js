@@ -12,7 +12,7 @@ class UpdateAddress extends Component {
   handleFormSubmit(values, actions) {
     actions.setSubmitting(false);
     this.props.updateAddress(values.address, () => {
-      this.props.alert('');
+      this.props.alert();
     });
   }
 
@@ -49,8 +49,6 @@ class UpdateAddress extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
-  
   return {
     address: state.auth.address,
   };

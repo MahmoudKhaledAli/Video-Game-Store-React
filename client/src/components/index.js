@@ -7,3 +7,6 @@ export { default as requireAuth } from './requireAuth';
 export { default as alert } from './alert';
 export { default as OrderItem } from './OrderItem';
 export { default as ProductsList } from './ProductsList';
+export { default as ProductShow } from './ProductShow';
+export { default as ReviewsList } from './ReviewsList';
+export { default as Review } from './Review';

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
+import { Button } from 'react-bootstrap';
+
 import 'styles/style.css';
 
 class CartItem extends Component {
   render() {
-    console.log(this.props.cartItem);
-    
     const { product: { name, platform, price, sale }, quantity, final_price } = this.props.cartItem;
 
     return (
@@ -21,10 +21,10 @@ class CartItem extends Component {
         <td>{sale}</td>
         <td>{final_price}</td>
         <td>
-          <button className="btn btn-primary btn-md">Update Item</button>
+          <Button>Update Item</Button>
         </td>
         <td>
-          <button className="btn btn-danger btn-md">Delete Item</button>
+          <Button bsSize="danger">Delete Item</Button>
         </td>
       </tr>
     );

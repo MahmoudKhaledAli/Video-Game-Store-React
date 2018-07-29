@@ -5,3 +5,6 @@ export const ADD_TO_CART = 'add_to_cart';
 export const FETCH_CART = 'fetch_cart';
 export const FETCH_FEATURED = 'fetch_featured';
 export const SEARCH = 'search';
+export const ADD_REVIEW = 'add_review';
+export const FETCH_PRODUCT = 'fetch_product';
+export const ADD_TO_CART_ERROR = 'add_to_cart_error';

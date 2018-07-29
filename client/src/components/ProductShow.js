@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import AddToCartButton from 'containers/AddToCartButton';
+import { AddToCartButton } from 'containers';
 
 import 'styles/style.css';
 

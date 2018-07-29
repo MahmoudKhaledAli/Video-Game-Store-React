@@ -1,4 +1,3 @@
-export { default as ProductShow } from './ProductShow';
 export { default as CartTable } from './CartTable';
 export { default as BrowseList } from './BrowseList';
 export { default as HighestRated } from './HighestRated';
@@ -14,3 +13,4 @@ export { default as Checkout } from './Checkout';
 export { default as UserOrder } from './UserOrder';
 export { default as UserOrderList } from './UserOrderList';
 export { default as AddToCart } from './AddToCart';
+export { default as AddToCartButton } from './AddToCartButton';

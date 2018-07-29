@@ -10,7 +10,9 @@ export default ({ title, successMsg }) => WrappedComponent => {
       this.state = { alert: null };
     }
 
-    alert(alertMsg, callback = () => { }) {
+    alert(callback = () => { }) {
+      console.log(this.props.errorMessage);
+      
       const getAlert = alertMsg => (
         <SweetAlert
           danger={alertMsg}
@@ -27,7 +29,7 @@ export default ({ title, successMsg }) => WrappedComponent => {
         </SweetAlert>
       );
 
-      this.setState({ alert: getAlert(alertMsg) });
+      this.setState({ alert: getAlert(this.props.errorMessage) });
     }
 
     hideAlert() {

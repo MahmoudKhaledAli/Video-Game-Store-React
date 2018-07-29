@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { Button } from 'react-bootstrap';
+
 class Checkout extends Component {
   render() {
     const { cartItems, total } = this.props;
@@ -15,7 +17,7 @@ class Checkout extends Component {
             <div className="text-left form-group">
               <input style={{ width: '53%' }} type="text" className="form-control input-lg" />
             </div>
-            <button type="submit" className="btn btn-primary btn-lg">Place Order</button>
+            <Button type="submit" bsSize="lg">Place Order</Button>
           </form>
         </div>
       );

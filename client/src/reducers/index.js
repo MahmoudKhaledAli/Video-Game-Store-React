@@ -4,6 +4,8 @@ import { productsReducer, featuredReducer, currentProductReducer, searchReducer 
 import { cartReducer } from './cartReducer';
 import { authReducer } from './authReducer';
 import { ordersReducer } from './ordersReducer';
+import { reviewsReducer } from './reviewsReducer';
+import { errorsReducer } from './errorsReducer';
 
 const rootReducer = combineReducers({
   products: productsReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   auth: authReducer,
   orders: ordersReducer,
-  searchIds: searchReducer
+  searchIds: searchReducer,
+  reviews: reviewsReducer,
+  errors: errorsReducer
 });
 
 export default rootReducer;

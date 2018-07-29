@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { ADD_TO_CART, FETCH_CART, FETCH_FEATURED, SEARCH } from 'actions/types';
+import { ADD_TO_CART, FETCH_CART, FETCH_FEATURED, SEARCH, FETCH_PRODUCT } from 'actions/types';
 
 const INITIAL_STATE = {};
 
@@ -28,6 +28,9 @@ export function productsReducer(state = INITIAL_STATE, action) {
 
     case SEARCH:
       return { ...state, ..._.mapKeys(action.payload.products, 'idproduct') };
+
+    case FETCH_PRODUCT:
+      return { ...state, ..._.mapKeys([_.omit(action.payload[0], ['username', 'comment'])], 'idproduct') };
 
     default:
       return state;
@@ -58,8 +61,6 @@ export function featuredReducer(state = { topSellersIds: [], highestRatedIds: []
 export function searchReducer(state = [], action) {
   switch (action.type) {
     case SEARCH:
-      console.log(action.payload);
-
       if (action.payload.products) {
         return action.payload.products.map(product => product.idproduct);
       } else {

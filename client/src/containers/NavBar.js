@@ -63,9 +63,9 @@ function mapStateToProps(state) {
 }
 
 const enhance = compose(
-  alert({ title: 'Sign out', successMsg: 'Logged out successfully' }),
   connect(mapStateToProps, { signout }),
-  withRouter
+  withRouter,
+  alert({ title: 'Sign out', successMsg: 'Logged out successfully' })
 )
 
 export default enhance(NavBar);
