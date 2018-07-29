@@ -1,0 +1,26 @@
+# Video Game Store
+
+A remake of the video game store using React and Redux<br>
+Original project: https://github.com/MahmoudKhaledAli/video-game-store
+
+### To run use 2 seperate terminals:
+#### Database setup:
+Install MySQL and run the DatabaseSchema.sql file to create the database schema
+#### Client:
+```
+> cd client
+> npm run start
+```
+#### Server:
+```
+> cd server
+> npm run start
+```
+
+### Note:
+You need to create a file config.js in the server directory, and have it export a secret string for authentication
+```
+module.exports = {
+  secret: 'xxxxx'
+}
+```
