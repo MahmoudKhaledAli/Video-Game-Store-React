@@ -7,11 +7,6 @@ exports.productsList = async (req, res, next) => {
   try {
     connection = await pool.getConnection();
 
-    console.log(`SELECT * FROM product
-    WHERE name like ?
-    ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'idproduct') : 'idproduct'}
-    ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? 'LIMIT ? OFFSET ?' : ''} `);
-
     let products = await connection.query(
       `SELECT * FROM product
        WHERE name like ?
@@ -130,7 +125,6 @@ exports.usersList = async (req, res, next) => {
     );
 
     users = users.map(user => _.omit(_.rename(user, 'username', 'id'), 'password'));
-    console.log(users);
 
     const count = (await connection.query(
       "SELECT count(*) as count FROM user WHERE username like ?",
