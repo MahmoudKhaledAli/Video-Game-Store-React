@@ -31,7 +31,7 @@ exports.addReview = async (req, res, next) => {
       [req.user.username, req.body.idproduct, req.body.score, req.body.comment]
     );
 
-    res.json({ address: req.body });
+    res.json({ ...req.body, username: req.user.username });
   } catch (err) {
     next(err);
   } finally {

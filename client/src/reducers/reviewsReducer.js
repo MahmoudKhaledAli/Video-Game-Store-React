@@ -11,6 +11,9 @@ export function reviewsReducer(state = [], action) {
       }
 
     case ADD_REVIEW:
+      console.log(state);
+      console.log(_.pick(action.payload, ['score', 'comment', 'username']));
+      
       return [...state, _.pick(action.payload, ['score', 'comment', 'username'])];
 
     default:

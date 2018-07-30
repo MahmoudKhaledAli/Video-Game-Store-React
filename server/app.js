@@ -5,6 +5,7 @@ const routers = require('./routers');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
+require('./utils/helpers');
 const port = process.env.PORT || 8080;
 
 app.use(morgan('combined'));
@@ -14,7 +15,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// app.use('/admin', routers.adminRouter);
+app.use('/admin', routers.adminRouter);
 app.use('/user', routers.userRouter);
 app.use('/', routers.apiRouter);
 

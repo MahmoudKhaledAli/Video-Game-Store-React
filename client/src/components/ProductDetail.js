@@ -18,7 +18,7 @@ function renderPrice(product) {
 
 export default ({ product, reviews, platforms, children }) => {
   if (!product) {
-    return <div>Loading...</div>;
+    return <div className="row">Loading...</div>;
   }
 
   return (
