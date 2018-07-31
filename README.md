@@ -12,14 +12,14 @@ Install MySQL and run the DatabaseSchema.sql file to create the database schema.
 > cd client
 > npm run start
 ```
-#### Server:
-```
-> cd server
-> npm run start
-```
 #### Admin:
 ```
 > cd admin
+> npm run start
+```
+#### Server:
+```
+> cd server
 > npm run start
 ```
 
