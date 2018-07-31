@@ -86,7 +86,7 @@ const ProductReferenceField = props => (
     reference="products"
     {...props}
   >
-    <TextField source="reference" />
+    <TextField source="name" />
   </ReferenceField>
 );
 

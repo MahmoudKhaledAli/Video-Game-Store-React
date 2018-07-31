@@ -186,3 +186,21 @@ export const checkout = (total, coupon, callback) => async dispatch => {
     callback();
   }
 };
+
+export const fetchOrders = () => async dispatch => {
+  const response = await axios.get('http://localhost:8080/user/orders');
+
+  dispatch({
+    type: ActionTypes.FETCH_ORDERS,
+    payload: response.data
+  });
+}
+
+export const deleteOrder = idorder => async dispatch => {
+  const response = await axios.post('http://localhost:8080/user/deleteorder', { idorder });
+
+  dispatch({
+    type: ActionTypes.DELETE_ORDER,
+    payload: response.data
+  }); 
+}

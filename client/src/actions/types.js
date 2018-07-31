@@ -11,3 +11,5 @@ export const ADD_TO_CART_ERROR = 'add_to_cart_error';
 export const DELETE_CART_ITEM = 'delete_cart_item';
 export const CHECKOUT = 'checkout';
 export const CHECKOUT_ERROR = 'checkout_error';
+export const FETCH_ORDERS = 'fetch_orders';
+export const DELETE_ORDER = 'delete_order_';

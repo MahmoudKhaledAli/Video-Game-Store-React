@@ -29,9 +29,7 @@ export const ReviewList = (props) => (
   <List {...props}>
     <Datagrid>
       <TextField source="username" label="Username" />
-      <ReferenceField label="Product" source="idproduct" reference="products">
-        <TextField source="name" />
-      </ReferenceField>
+      <ProductReferenceField />
       <TextField source="score" label="Score" />
       <TextField source="comment" label="Comment" />
     </Datagrid>

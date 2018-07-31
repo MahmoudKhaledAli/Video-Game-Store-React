@@ -1,22 +1,15 @@
-const defaultState = {
-  orders: []
-}
+import { FETCH_ORDERS, DELETE_ORDER } from 'actions/types';
+import _ from 'lodash';
 
-export function ordersReducer(state = defaultState, action) {
-  return [
-    {
-      idorder: 1,
-      items: [{ name: 'FIFA 13', quantity: 12 }, { name: 'Injustice', quantity: 5 }],
-      datecreated: '7/28/2018',
-      status: 0,
-      total: 100
-    },
-    {
-      idorder: 2,
-      items: [{ name: 'FIFA 17', quantity: 12 }, { name: 'Injustice 2', quantity: 5 }],
-      datecreated: '7/22/2018',
-      status: 2,
-      total: 1000
-    }
-  ]
+export function ordersReducer(state = [], action) {
+  switch (action.type) {
+    case FETCH_ORDERS:
+      return _.mapKeys(action.payload.orders, 'idorder');
+
+    case DELETE_ORDER:
+    return _.omit(state, action.payload.idorder)
+
+    default:
+      return state;
+  }
 }

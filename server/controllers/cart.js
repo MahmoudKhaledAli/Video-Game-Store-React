@@ -100,6 +100,12 @@ exports.checkout = async (req, res, next) => {
 
     await connection.query('START TRANSACTION');
 
+    let idorder = (await connection.query("SELECT MAX(idorder) as idorder FROM `games`.`order`"))[0].idorder;
+
+    if (!idorder) {
+      idorder = 1;
+    }
+
     const cartItemsAction = connection.query(
       "SELECT * FROM cart WHERE username = ?",
       [req.user.username]
@@ -123,8 +129,8 @@ exports.checkout = async (req, res, next) => {
     }
 
     const insertActions = cartItems.map(cartItem => connection.query(
-      "INSERT INTO `games`.`order` (username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?)",
-      [req.user.username, cartItem.idproduct, cartItem.quantity, 0, new Date(), coupon ? req.body.total * (100 - coupon[0].discount) / 100 : req.body.total]
+      "INSERT INTO `games`.`order` (idorder ,username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?,?)",
+      [idorder, req.user.username, cartItem.idproduct, cartItem.quantity, 0, new Date(), coupon ? req.body.total * (100 - coupon[0].discount) / 100 : req.body.total]
     ));
 
     const updateActions = cartItems.map(cartItem => connection.query(

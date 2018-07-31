@@ -4,8 +4,13 @@ import { compose } from 'redux';
 import _ from 'lodash';
 
 import { UserOrder } from 'components';
+import { fetchOrders } from 'actions';
 
 class UserOrderList extends Component {
+  componentDidMount() {
+    this.props.fetchOrders();
+  }
+
   renderWithLayout(cart) {
     return (
       <div className="row">
@@ -18,8 +23,10 @@ class UserOrderList extends Component {
 
   render() {
     const { orders } = this.props;
+    console.log(orders);
+    
 
-    if (orders.length === 0) {
+    if (_.isEmpty(orders)) {
       return this.renderWithLayout(<h1 align="center">You have not made any orders yet!</h1>);
     }
 
@@ -63,7 +70,7 @@ function mapStateToProps({ orders }) {
 }
 
 const enhance = compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps, { fetchOrders })
 );
 
 export default enhance(UserOrderList);

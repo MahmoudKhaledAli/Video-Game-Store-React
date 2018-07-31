@@ -15,5 +15,7 @@ router.get('/fetchcart', Cart.fetchCart);
 router.post('/checkout', Cart.checkout);
 router.post('/addreview', User.addReview);
 router.post('/deletecart', Cart.deleteCartItem);
+router.get('/orders', User.getOrders);
+router.post('/deleteorder', User.deleteOrder);
 
 module.exports = router;
