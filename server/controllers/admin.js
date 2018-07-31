@@ -124,7 +124,7 @@ exports.usersList = async (req, res, next) => {
        ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'username') : 'username'}
        ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? `LIMIT ${req.query._end - req.query._start}
        OFFSET ${req.query._start}` : ''};`,
-      [`%${req.query._username ? req.query._username : ''}%`, -req.query._start + req.query._end]
+      [`%${req.query._username ? req.query._username : ''}%`]
     );
 
     users = users.map(user => _.omit(_.rename(user, 'username', 'id'), 'password'));
@@ -212,8 +212,10 @@ exports.couponsList = async (req, res, next) => {
     let coupons = await connection.query(
       `SELECT * FROM coupon
        WHERE idcoupon like ?
-        ORDER BY ${ req.query._sort.replace('id', 'idcoupon')} ${req.query._order} LIMIT 10`,
-      [`%${req.query._name ? req.query._name : ''}%`, -req.query._start + req.query._end]
+       ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'idcoupon') : 'username'}
+       ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? `LIMIT ${req.query._end - req.query._start}
+       OFFSET ${req.query._start}` : ''};`,
+      [`%${req.query._name ? req.query._name : ''}%`]
     );
 
 
@@ -319,22 +321,20 @@ exports.reviewsList = async (req, res, next) => {
   try {
     connection = await pool.getConnection();
 
-    if (req.query._sort == 'id') {
-      req.query._sort = 'username';
-    }
-
     let reviews = await connection.query(
       `SELECT * FROM review
-       WHERE username like ?
-        ORDER BY ${ req.query._sort} ${req.query._order} LIMIT 10`,
-      [`%${req.query._username ? req.query._username : ''}%`, -req.query._start + req.query._end]
+       ${req.query._username ? 'WHERE username = ?' : ''}
+       ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'username') : ''}
+       ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? `LIMIT ${req.query._end - req.query._start}
+       OFFSET ${req.query._start}` : ''};`,
+      [`${req.query._username ? req.query._username : ''}`]
     );
 
     reviews = reviews.map(review => ({ ...review, id: `${review.username},${review.idproduct}` }));
 
     const count = (await connection.query(
-      "SELECT count(*) as count FROM review WHERE username like ?",
-      [`%${req.query._username ? req.query._username : ''}%`]
+      `SELECT count(*) as count FROM review ${req.query._username ? 'WHERE username = ?' : ''}`,
+      [`${req.query._username ? req.query._username : ''}`]
     ))[0].count;
 
     res.header('X-Total-Count', count);
@@ -398,13 +398,16 @@ exports.ordersList = async (req, res, next) => {
 
     let orders = await connection.query(
       `SELECT * FROM games.order
+       ${req.query._status ? 'WHERE status = ?' : ''}
        ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'idorder') : 'idorder'}
        ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? `LIMIT ${req.query._end - req.query._start}
-       OFFSET ${req.query._start}` : ''};`
+       OFFSET ${req.query._start}` : ''};`,
+      [req.query._status]
     );
 
     const count = (await connection.query(
-      `SELECT count(*) as count FROM games.order`
+      `SELECT COUNT(DISTINCT idorder) as count FROM games.order ${req.query._status ? 'WHERE status = ?' : ''}`,
+      [req.query._status]
     ))[0].count;
 
     orders = helpers.convertOrders(orders);

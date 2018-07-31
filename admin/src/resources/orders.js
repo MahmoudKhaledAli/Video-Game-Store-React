@@ -26,7 +26,7 @@ const orderStatus = [
 
 const OrderFilter = (props) => (
   <Filter {...props}>
-    {/* <TextInput label="Search" source="_name" alwaysOn /> */}
+    <SelectInput label="Status" source="_status" choices={orderStatus} />
   </Filter>
 );
 

@@ -18,7 +18,6 @@ import OrderIcon from '@material-ui/icons/AttachMoney';
 const dataProvider = jsonServerProvider('http://localhost:8080/admin');
 const App = () => (
   <Admin
-    dashboard={Dashboard}
     dataProvider={dataProvider}
     title="Video Game Store"
   >

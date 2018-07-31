@@ -4,6 +4,8 @@ import {
   Datagrid,
   TextField,
   Filter,
+  ReferenceInput,
+  SelectInput
 } from 'react-admin';
 
 import { ProductReferenceField } from './products';
@@ -11,7 +13,9 @@ import { UserReferenceField } from './users';
 
 const ReviewFilter = (props) => (
   <Filter {...props}>
-    {/* <TextInput label="Search" source="_name" alwaysOn /> */}
+    <ReferenceInput label="User" source="_username" reference="users">
+      <SelectInput optionText="id" />
+    </ReferenceInput>
   </Filter>
 );
 
