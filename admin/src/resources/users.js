@@ -6,6 +6,7 @@ import {
   DateField,
   EditButton,
   EmailField,
+  ReferenceField,
   Edit,
   SimpleForm,
   DisabledInput,
@@ -47,3 +48,21 @@ export const UserEdit = (props) => (
     </SimpleForm>
   </Edit>
 );
+
+const UserReferenceField = props => (
+  <ReferenceField
+    label="User"
+    source="username"
+    reference="users"
+    {...props}
+  >
+    <TextField source="id" />
+  </ReferenceField>
+);
+
+UserReferenceField.defaultProps = {
+  source: 'username',
+  addLabel: true,
+};
+
+export { UserReferenceField };

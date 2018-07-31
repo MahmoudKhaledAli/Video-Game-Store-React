@@ -1,5 +1,6 @@
 const pool = require('../utils/sqlConnector');
 const _ = require('lodash');
+const helpers = require('../utils/helpers');
 
 exports.updateAddress = async (req, res, next) => {
   let connection;
@@ -52,15 +53,7 @@ exports.getOrders = async (req, res, next) => {
       [req.user.username]
     );
 
-    orders = _.map(_.mapValues(_.groupBy(orders, 'idorder'), order => order.map(orderItem => _.pick(orderItem, ['name', 'quantity', 'datecreated', 'status', 'total', 'idorder']))), order => {
-      orderObject = Object();
-      orderObject.idorder = order[0].idorder;
-      orderObject.total = order[0].total;
-      orderObject.status = order[0].status;
-      orderObject.datecreated = order[0].datecreated;
-      orderObject.items = order.map(orderItem => _.pick(orderItem, ['name', 'quantity']));
-      return orderObject;
-    });
+    orders = helpers.convertOrders(orders);
 
     res.json({ orders });
   } catch (err) {

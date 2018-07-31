@@ -130,7 +130,7 @@ exports.checkout = async (req, res, next) => {
 
     const insertActions = cartItems.map(cartItem => connection.query(
       "INSERT INTO `games`.`order` (idorder ,username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?,?)",
-      [idorder, req.user.username, cartItem.idproduct, cartItem.quantity, 0, new Date(), coupon ? req.body.total * (100 - coupon[0].discount) / 100 : req.body.total]
+      [idorder + 1, req.user.username, cartItem.idproduct, cartItem.quantity, 0, new Date(), coupon ? req.body.total * (100 - coupon[0].discount) / 100 : req.body.total]
     ));
 
     const updateActions = cartItems.map(cartItem => connection.query(

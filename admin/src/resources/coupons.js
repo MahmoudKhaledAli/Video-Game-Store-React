@@ -4,15 +4,11 @@ import {
   Datagrid,
   TextField,
   EditButton,
-  SelectField,
   Edit,
   Create,
   SimpleForm,
-  DisabledInput,
   NumberInput,
-  SelectInput,
   TextInput,
-  LongTextInput,
   Filter
 } from 'react-admin';
 

@@ -22,4 +22,9 @@ router.get('/reviews', Admin.reviewsList);
 router.get('/reviews/:id', Admin.review);
 router.delete('/reviews/:id', Admin.deleteReview);
 
+router.get('/orders', Admin.ordersList);
+router.get('/orders/:id', Admin.order);
+router.put('/orders/:id', Admin.updateOrder);
+router.delete('/orders/:id', Admin.deleteOrder);
+
 module.exports = router;

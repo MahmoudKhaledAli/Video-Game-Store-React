@@ -1,4 +1,5 @@
 const pool = require('../utils/sqlConnector');
+const helpers = require('../utils/helpers');
 const _ = require('lodash');
 
 exports.productsList = async (req, res, next) => {
@@ -120,7 +121,9 @@ exports.usersList = async (req, res, next) => {
     let users = await connection.query(
       `SELECT * FROM user
        WHERE username like ?
-        ORDER BY ${ req.query._sort.replace('id', 'username')} ${req.query._order} LIMIT 10`,
+       ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'username') : 'username'}
+       ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? `LIMIT ${req.query._end - req.query._start}
+       OFFSET ${req.query._start}` : ''};`,
       [`%${req.query._username ? req.query._username : ''}%`, -req.query._start + req.query._end]
     );
 
@@ -334,7 +337,6 @@ exports.reviewsList = async (req, res, next) => {
       [`%${req.query._username ? req.query._username : ''}%`]
     ))[0].count;
 
-
     res.header('X-Total-Count', count);
     res.header('Access-Control-Expose-Headers', 'X-Total-Count');
 
@@ -377,6 +379,99 @@ exports.deleteReview = async (req, res, next) => {
     await connection.query(
       "DELETE FROM review WHERE username = ? AND idproduct = ?",
       [username, idproduct]
+    );
+
+    res.json({});
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.ordersList = async (req, res, next) => {
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    let orders = await connection.query(
+      `SELECT * FROM games.order
+       ORDER BY ${req.query._sort ? req.query._sort.replace('id', 'idorder') : 'idorder'}
+       ${req.query._order ? req.query._order : 'ASC'} ${req.query._end ? `LIMIT ${req.query._end - req.query._start}
+       OFFSET ${req.query._start}` : ''};`
+    );
+
+    const count = (await connection.query(
+      `SELECT count(*) as count FROM games.order`
+    ))[0].count;
+
+    orders = helpers.convertOrders(orders);
+    orders = orders.map(order => _.rename(order, 'idorder', 'id'));
+
+    res.header('X-Total-Count', count);
+    res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+
+    res.json(orders);
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.order = async (req, res, next) => {
+  let connection;
+
+  try {
+    connection = await pool.getConnection();
+
+    let order = await connection.query(
+      `SELECT * FROM games.order WHERE idorder = ?`,
+      [req.params.id]
+    );
+
+    order = helpers.convertOrders(order)[0];
+    order = _.rename(order, 'idorder', 'id');
+
+    res.json(order);
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.updateOrder = async (req, res, next) => {
+  try {
+    connection = await pool.getConnection();
+
+    await connection.query(
+      "UPDATE games.order SET status = ?\
+       WHERE idorder = ?",
+      [req.body.status, req.params.id]
+    );
+
+    res.json({ id: req.params.id });
+  } catch (err) {
+    next(err);
+  } finally {
+    connection.release();
+    res.end();
+  }
+}
+
+exports.deleteOrder = async (req, res, next) => {
+  try {
+    connection = await pool.getConnection();
+
+    await connection.query(
+      "DELETE FROM games.order\
+       WHERE idorder = ?",
+      [req.params.id]
     );
 
     res.json({});
