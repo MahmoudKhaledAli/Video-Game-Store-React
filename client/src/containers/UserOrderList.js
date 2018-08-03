@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import _ from 'lodash';
 
-import { UserOrder } from 'components';
+import { UserOrder } from 'containers';
 import { fetchOrders } from 'actions';
 
 class UserOrderList extends Component {
@@ -23,8 +23,6 @@ class UserOrderList extends Component {
 
   render() {
     const { orders } = this.props;
-    console.log(orders);
-    
 
     if (_.isEmpty(orders)) {
       return this.renderWithLayout(<h1 align="center">You have not made any orders yet!</h1>);

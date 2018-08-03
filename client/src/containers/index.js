@@ -12,3 +12,4 @@ export { default as UpdateAddress } from './UpdateAddress';
 export { default as Checkout } from './Checkout';
 export { default as UserOrderList } from './UserOrderList';
 export { default as AddToCartButton } from './AddToCartButton';
+export { default as UserOrder } from './UserOrder';
