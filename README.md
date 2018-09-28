@@ -10,19 +10,22 @@ Install MySQL and run the DatabaseSchema.sql file to create the database schema.
 #### Client:
 ```
 > cd client
+> npm install
 > npm run start
 ```
 #### Admin:
 ```
 > cd admin
+> npm install
 > npm run start
 ```
 #### Server:
 ```
 > cd server
+> npm install
 > npm run start
 ```
-
+#### You only need to run npm install command once.
 ### Note:
 You need to create a file config.js in the server directory, and have it export a secret string for authentication, eg:
 ```
