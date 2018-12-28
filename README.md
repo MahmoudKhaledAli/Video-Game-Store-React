@@ -1,4 +1,4 @@
-# Video Game Store
+# Video Game Store Website
 
 A remake of the video game store using React and Redux<br>
 Original project: https://github.com/MahmoudKhaledAli/Video-Game-Store
